@@ -26,11 +26,10 @@ struct Settings: View {
                 }
                 
                 Section {
-                    
-                    NavigationLink(destination: Text("Privacy Policy")) {
+                    NavigationLink(destination: ContentUnavailable()) {
                         Text("Privacy Policy")
                     }
-                    NavigationLink(destination: Text("Help")) {
+                    NavigationLink(destination: ContentUnavailable()) {
                         Text("Help?")
                     }
                     

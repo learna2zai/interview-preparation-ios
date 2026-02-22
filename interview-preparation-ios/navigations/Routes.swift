@@ -7,9 +7,15 @@
 
 import Foundation
 
-enum Routes: String, CaseIterable {
+enum BasicExplorationsRoutes: String, CaseIterable {
     case customViews
     case swiftData
     case swiftCharts
     case spm
+}
+
+enum ArchitectureRoutes: String, CaseIterable {
+    case mvvm
+    case cleanArchitecture
+    case redux
 }
