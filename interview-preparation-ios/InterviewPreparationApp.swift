@@ -1,5 +1,5 @@
 //
-//  interview_preparation_iosApp.swift
+//  InterviewPreparationApp.swift
 //  interview-preparation-ios
 //
 //  Created by Ganesh on 22/02/26.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct interview_preparation_iosApp: App {
+struct InterviewPreparationApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
