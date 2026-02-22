@@ -29,9 +29,12 @@ struct DesignTokens {
     }
     
     enum Spacing: Double {
-        case small
-        case regular
-        case large
+        case extrasmall = 4
+        case small = 8
+        case medium = 12
+        case regular = 16
+        case large = 20
+        case extraLarge = 24
     }
     
     enum CornerRadius: Double {
@@ -51,6 +54,10 @@ extension DesignTokens {
     
     func color(_ color: DesignTokens.Color) -> String {
         color.value
+    }
+    
+    func spacing(_ size: Spacing) -> Double {
+        size.rawValue
     }
 }
 

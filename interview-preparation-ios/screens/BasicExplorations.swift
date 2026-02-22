@@ -14,33 +14,29 @@ struct BasicExplorations: View {
         NavigationStack(path: $path) {
             List {
                 Section(header: Text("Custom Views")) {
-                    NavigationLink("Background Color View", value: Routes.customViews)
+                    NavigationLink("Background Color View", value: BasicExplorationsRoutes.customViews)
                 }
                 
                 Section(header: Text("Local storage and Database")) {
-                    NavigationLink("Sqlite", value: Routes.swiftData)
+                    NavigationLink("Sqlite", value: BasicExplorationsRoutes.swiftData)
                 }
                 
                 Section(header: Text("Swift Charts")) {
-                    NavigationLink("Charts", value: Routes.swiftCharts)
+                    NavigationLink("Charts", value: BasicExplorationsRoutes.swiftCharts)
                 }
                 
                 Section(header: Text("Swift Package Manager")) {
-                    NavigationLink("SPM", value: Routes.spm)
+                    NavigationLink("SPM", value: BasicExplorationsRoutes.spm)
                 }
             }
             .navigationTitle("Basic Explorations")
-            .navigationDestination(for: Routes.self, destination: {
+            .navigationDestination(for: BasicExplorationsRoutes.self, destination: {
                 switch $0 {
                     case .customViews:
                         CustomViews()
-                    case .swiftData:
-                        Text("Swift Data")
-                    case .swiftCharts:
-                        Text("Swift Charts")
                         
                     default:
-                        Text("View not implemented")
+                        ContentUnavailable()
                 }
             })
         }
