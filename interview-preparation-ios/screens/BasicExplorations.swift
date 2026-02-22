@@ -33,7 +33,7 @@ struct BasicExplorations: View {
             .navigationDestination(for: Routes.self, destination: {
                 switch $0 {
                     case .customViews:
-                        Text("Custom Views")
+                        CustomViews()
                     case .swiftData:
                         Text("Swift Data")
                     case .swiftCharts:

@@ -10,7 +10,9 @@ import SwiftUI
 struct Architecture: View {
     var body: some View {
         NavigationStack {
-           ContentUnavailableView("Not implemented", systemImage: "newspaper.fill", description: Text("Will be added in future"))
+           ContentUnavailableView("Not implemented",
+                                  systemImage: "newspaper.fill",
+                                  description: Text("Will be added in future"))
             .navigationTitle("Architecture")
         }
     }
