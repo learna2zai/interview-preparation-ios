@@ -62,7 +62,7 @@ View → ViewModel → UseCase → Repository → API
 * **Data Repositories Layer** = Repositories Implementations + API (Network) + Persistence DB
 * **Presentation Layer (MVVM)** = ViewModels + Views
 
-![Alt text](ReadMeImages/CleanArchitectureDependencies.png?raw=true "Modules Dependencies")
+![Alt text](../../../ReadMeImages/CleanArchitectureDependencies.png)
 
 ### Why it’s popular:
 
