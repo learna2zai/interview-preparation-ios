@@ -15,7 +15,6 @@ enum BasicExplorationsRoutes: String, CaseIterable {
 }
 
 enum ArchitectureRoutes: String, CaseIterable {
-    case mvvm
-    case cleanArchitecture
+    case cleanArchitectureMVVM
     case redux
 }
