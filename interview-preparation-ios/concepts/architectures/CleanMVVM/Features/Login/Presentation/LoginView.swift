@@ -23,7 +23,9 @@ struct LoginView: View {
             SecureField("Password", text: $loginViewModel.password)
                 .textFieldStyle(.roundedBorder)
             Button {
-                loginViewModel.login()
+                Task {
+                   await loginViewModel.login()
+                }
             } label: {
                 Text("Login")
                     .font(.title2)

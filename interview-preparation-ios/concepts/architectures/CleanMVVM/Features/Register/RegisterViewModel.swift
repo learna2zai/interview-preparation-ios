@@ -15,19 +15,23 @@ final class RegisterViewModel {
     var email: String = ""
     var password: String = ""
     
+    var isLoading: Bool = false
+    var errorMessage: String? = nil
+    
     private let registerUseCase: RegisterUseCase
     
     init(usecase: RegisterUseCase) {
         self.registerUseCase = usecase
     }
     
-    func register() {
-        Task {
-            do {
-                try await registerUseCase.execute(name: name, email: email, password: password)
-            } catch {
-                print("Handle Error \(error.localizedDescription)")
-            }
+    func register() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            _ = try await registerUseCase.execute(name: name, email: email, password: password)
+        } catch {
+            self.errorMessage = error.localizedDescription
         }
     }
 }
