@@ -11,7 +11,7 @@ protocol APIClientProtocol {
     func login(email: String, passowrd: String) async throws -> Bool
     func register(name: String, email: String, password: String) async throws -> Bool
     func fetchProfile() async throws -> UserDTO
-    func logout() async throws
+    func logout() async throws -> Bool
 }
 
 final class APIClient: APIClientProtocol {
@@ -44,7 +44,7 @@ final class APIClient: APIClientProtocol {
         return self.userDTO!
     }
     
-    func logout() async throws {
-        //
+    func logout() async throws -> Bool {
+        return false
     }
 }

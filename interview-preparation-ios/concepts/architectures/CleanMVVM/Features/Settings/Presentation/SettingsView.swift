@@ -19,7 +19,9 @@ struct SettingsView: View {
             Form {
                 Section(header: Text("Settings")) {
                     Button("Logout") {
-                        settingsViewModel.logout()
+                        Task {
+                            await settingsViewModel.logout()
+                        }
                     }
                 }
             }

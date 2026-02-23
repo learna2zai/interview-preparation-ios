@@ -32,7 +32,9 @@ struct RegisterView: View {
                     
                     HStack {
                         Button("Register") {
-                            registerViewModel.register()
+                            Task {
+                                await registerViewModel.register()
+                            }
                         }
                         .padding()
                         

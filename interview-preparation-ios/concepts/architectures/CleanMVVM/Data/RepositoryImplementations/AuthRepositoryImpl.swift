@@ -15,15 +15,15 @@ final class AuthRepositoryImpl: AuthRepository {
         self.apiClient = apiClient
     }
     
-    func login(email: String, password: String) async throws {
-        _ = try await apiClient.login(email: email, passowrd: password)
+    func login(email: String, password: String) async throws -> Bool {
+        try await apiClient.login(email: email, passowrd: password)
     }
     
-    func register(name: String, email: String, password: String) async throws {
-        _ = try await apiClient.register(name: name, email: email, password: password)
+    func register(name: String, email: String, password: String) async throws -> Bool {
+        try await apiClient.register(name: name, email: email, password: password)
     }
     
-    func logout() async throws {
+    func logout() async throws -> Bool {
         try await apiClient.logout()
     }
 }

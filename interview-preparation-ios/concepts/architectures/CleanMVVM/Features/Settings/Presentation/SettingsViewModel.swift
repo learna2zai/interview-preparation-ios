@@ -14,6 +14,9 @@ final class SettingsViewModel {
     private let logoutUseCase: LogoutUseCase
     private let appVierwModel: AppViewModel
     
+    var isLoding: Bool = false
+    var errorMessage: String? = nil
+    
     init(usecase: LogoutUseCase, appViewModel: AppViewModel) {
         self.logoutUseCase = usecase
         self.appVierwModel = appViewModel
@@ -23,14 +26,14 @@ final class SettingsViewModel {
     var isEmailNotificationEnabled: Bool = false
     var isSMSNotificationEnabled: Bool = false
     
-    func logout() {
-        Task {
-            do {
-                try await logoutUseCase.execute()
-                appVierwModel.setLoggedInStatus(false)
-            } catch {
-                print("Handle Error \(error.localizedDescription)")
-            }
+    func logout() async {
+        isLoding = true
+        defer { isLoding = false }
+        do {
+            let result = try await logoutUseCase.execute()
+            self.appVierwModel.setLoggedInStatus(result)
+        } catch {
+            self.errorMessage = error.localizedDescription
         }
     }
 }

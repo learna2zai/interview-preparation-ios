@@ -14,7 +14,7 @@ final class LogoutUseCase {
         self.authRepository = authRepository
     }
     
-    func execute() async throws {
+    func execute() async throws -> Bool {
         try await authRepository.logout()
     }
 }
