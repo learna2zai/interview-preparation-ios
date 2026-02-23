@@ -18,6 +18,12 @@ final class APIClient: APIClientProtocol {
     
     var userDTO: UserDTO?
     
+    private let baseUrl: String
+    
+    init(baseUrl: String) {
+        self.baseUrl = baseUrl
+    }
+    
     func login(email: String, passowrd: String) async throws -> Bool {
         // store token details after login
         

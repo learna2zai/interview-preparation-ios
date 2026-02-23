@@ -26,11 +26,11 @@ struct SettingsView: View {
     }
 }
 
-#Preview {
-    let client = APIClient()
-    let authRepository = AuthRepositoryImpl(apiClient: client)
-    let logoutUseCase = LogoutUseCase(authRepository: authRepository)
-    let appViewModel = AppViewModel()
-    let viewModel = SettingsViewModel(usecase: logoutUseCase, appViewModel: appViewModel)
-    SettingsView(viewModel: viewModel)
-}
+//#Preview {
+//    let client = APIClient()
+//    let authRepository = AuthRepositoryImpl(apiClient: client)
+//    let logoutUseCase = LogoutUseCase(authRepository: authRepository)
+//    let appViewModel = AppViewModel()
+//    let viewModel = SettingsViewModel(usecase: logoutUseCase, appViewModel: appViewModel)
+//    SettingsView(viewModel: viewModel)
+//}

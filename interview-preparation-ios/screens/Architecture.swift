@@ -35,7 +35,7 @@ struct Architecture: View {
             .navigationDestination(for: ArchitectureRoutes.self) {
                 switch $0 {
                     case .cleanArchitectureMVVM:
-                        let container = DependencyContainer()
+                        let container = AppDIContainer(.development, )
                         AppView(appViewModel: container.appViewModel, container: container)
                     default:
                         ContentUnavailable()

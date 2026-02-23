@@ -12,13 +12,14 @@ import Combine
 struct AppView: View {
     
     @State var appViewModel: AppViewModel
-    var container: DependencyContainer
+    var container: AppDIContainer
     
     var body: some View {
         Group {
             switch appViewModel.currentRoute {
                 case .login:
-                    container.makeLoginView()
+                    LoginDIContainer(core: container.core)
+                        .makeLoginView(appState: appViewModel)
                 case .dashboard:
                     mainTabView
             }
@@ -27,9 +28,10 @@ struct AppView: View {
     }
     
     private var mainTabView: some View {
+        
         TabView {
             Tab {
-                container.makeDashboardView()
+                DashboardDIContainer(core: container.core).makeDashboardView()
             } label: {
                 VStack {
                     Image(systemName: "house")
@@ -39,7 +41,7 @@ struct AppView: View {
             }
             
             Tab {
-                container.makeSettingsView()
+                SettingsDIContainer(core: container.core, appViewModel: appViewModel).makeSettingsView()
             } label: {
                  VStack {
                     Image(systemName: "gearshape")
@@ -52,6 +54,6 @@ struct AppView: View {
 }
 
 #Preview {
-    let container = DependencyContainer()
+    let container = AppDIContainer(.development)
     AppView(appViewModel: container.appViewModel, container: container)
 }
