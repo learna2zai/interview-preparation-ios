@@ -178,3 +178,43 @@ MyApp/
 │
 └── Resources/
 ```
+
+## Analytics
+
+```
+Presentation (ViewModel)
+        ↓
+Domain (AnalyticsTracking protocol)
+        ↓
+Data (FirebaseAnalyticsService)
+        ↓
+Firebase SDK
+
+```
+
+Dependency rule respected:
+ - Outer layers depend on inner
+ - Domain does NOT depend on Firebase
+
+### ❌ Common Mistakes
+
+Bad practice:
+ - ❌ Calling Firebase directly in ViewModel
+ - ❌ Importing Firebase in Domain
+ - ❌ Passing [String: Any] everywhere
+ - ❌ Hardcoding event names in UI
+
+### 🧠 Final Clean Architecture Mapping
+Layer               Responsibility
+Domain              Define AnalyticsTracking protocol + events
+Data                Implement SDK wrapper
+Presentation        Call analytics
+DI                  Inject implementation
+
+### 🏆 Final Result
+You now have:
+ - Analytics decoupled from UI
+ - Business-level events
+ - Swappable providers
+ - Testable tracking
+ - Clean layering

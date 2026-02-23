@@ -14,10 +14,13 @@ struct LoginViewModelTests {
     
     let usecase = MockLoginUseCase()
     let appViewModel = AppViewModel()
+    let mockAnalytics = MockAnalytics()
     private var viewModel: LoginViewModel
     
     init() {
-        self.viewModel = .init(usecase: usecase, appViewModel: appViewModel)
+        self.viewModel = .init(usecase: usecase,
+                               appViewModel: appViewModel,
+                               analytics: mockAnalytics)
     }
     
     @Test("Verify login success")
@@ -30,7 +33,10 @@ struct LoginViewModelTests {
         viewModel.password = "password"
         
         await viewModel.login()
-        #expect(await appViewModel.currentRoute == .dashboard)
+        
+        #expect(appViewModel.currentRoute == .dashboard)
+        #expect(mockAnalytics.trackedEvents.contains(.logginTapped))
+        #expect(mockAnalytics.trackedEvents.contains(.loginSuccess))
     }
     
     @Test("Verify login failure")
@@ -41,5 +47,6 @@ struct LoginViewModelTests {
 
         #expect(viewModel.isLoding == false)
         #expect(viewModel.errorMessage != nil)
+        #expect(mockAnalytics.trackedEvents.contains(.loginFailed))
     }
 }

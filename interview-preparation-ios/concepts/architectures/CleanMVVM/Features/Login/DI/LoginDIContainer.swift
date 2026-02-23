@@ -18,7 +18,9 @@ final class LoginDIContainer {
     
     func makeLoginView(appState: AppViewModel) -> LoginView {
         let usecase = LoginUseCase(repository: repository)
-        let viewModel = LoginViewModel(usecase: usecase, appViewModel: appState)
+        let viewModel = LoginViewModel(usecase: usecase,
+                                       appViewModel: appState,
+                                       analytics: core.analyticsService)
         return LoginView(viewModel: viewModel)
     }
 }

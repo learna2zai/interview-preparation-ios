@@ -11,6 +11,10 @@ final class CoreDIContainer {
     
     let apiClient: APIClient
     
+    lazy var analyticsService: AnalyticsTracking = {
+        FirebaseAnalyticsService()
+    }()
+    
     init(environment: AppEnvironment) {
         switch environment {
             case .development:

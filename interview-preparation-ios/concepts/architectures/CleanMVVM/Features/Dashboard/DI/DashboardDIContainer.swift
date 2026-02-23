@@ -19,7 +19,8 @@ final class DashboardDIContainer {
     func makeDashboardView() -> DashboardView {
         
         let fetchProfileUseCase = FetchProfileUseCase(userRepository: respostaitory)
-        let viewModel = DashboardViewModel(usecase: fetchProfileUseCase)
+        let viewModel = DashboardViewModel(usecase: fetchProfileUseCase,
+                                           analytics: core.analyticsService)
         return DashboardView(viewModel: viewModel)
     }
 }
