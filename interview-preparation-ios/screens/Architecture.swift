@@ -13,32 +13,30 @@ struct Architecture: View {
     
     var body: some View {
         NavigationStack(path: $path) {
-            Grid(alignment: .center, horizontalSpacing: 16, verticalSpacing: 16, content: {
-                
-                GridRow {
-                    NavigationLink(value: ArchitectureRoutes.mvvm) {
-                        GridItem(model: GridItemModel(title: "MVVM", description: "MVVM is a software design pattern that separates data representation and business logic.")) {}
+            ScrollView(showsIndicators: false) {
+                Grid(alignment: .top, horizontalSpacing: 16, verticalSpacing: 16, content: {
+                    GridRow {
+                        NavigationLink(value: ArchitectureRoutes.cleanArchitectureMVVM) {
+                            GridItem(model: GridItemModel(title: "Clean Architecture + MVVM", description: "Clean architecture is a software design philosophy that separates data representation and business logic. \n\n Clean Architecture + MVVM combines strict layer separation with simple UI structuring. Core business logic lives in the Domain layer (Entities & UseCases), data access in the Data layer (Repositories & APIs), and the UI is handled by MVVM in the Presentation layer (View + ViewModel). \n\n This ensures scalability, testability, and independence from frameworks while keeping UI development fast and maintainable.")) {}
+                        }
                     }
+                    .foregroundStyle(.black)
                     
-                    NavigationLink(value: ArchitectureRoutes.redux) {
-                        GridItem(model: .init(title: "Redux", description: "Redux is a library for managing application state.")) {}
+                    GridRow {
+                        NavigationLink(value: ArchitectureRoutes.redux) {
+                            GridItem(model: .init(title: "Redux Architecture", description: "Redux Architecture is a modern approach to building user interfaces with reactive data flows. \n\n It uses a single, predictable source of truth, called the state, and employs a unidirectional data flow, using actions as the primary means of communication between different parts of an application. \n\n Redux Architecture is widely used in modern web applications, including those built with frameworks like React, Angular, and Vue.js.")) {}
+                        }
                     }
-                }
-                .foregroundStyle(.black)
-                
-                GridRow {
-                    NavigationLink(value: ArchitectureRoutes.redux) {
-                        GridItem(model: .init(title: "Clean", description: "Clean architecture is a software design philosophy that separates data representation and business logic.")) {}
-                    }
-                }
-                .foregroundStyle(.black)
-            })
-            .padding()
+                    .foregroundStyle(.black)
+                })
+                .padding()
+            }
             .navigationTitle("Architecture")
             .navigationDestination(for: ArchitectureRoutes.self) {
                 switch $0 {
-                    case .mvvm:
-                        ContentUnavailable()
+                    case .cleanArchitectureMVVM:
+                        let container = DependencyContainer()
+                        AppView(appViewModel: container.appViewModel, container: container)
                     default:
                         ContentUnavailable()
                 }
