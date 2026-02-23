@@ -57,6 +57,13 @@ Core idea:
 
 View → ViewModel → UseCase → Repository → API
 
+### Layers
+* **Domain Layer** = Entities + Use Cases + Repositories Interfaces
+* **Data Repositories Layer** = Repositories Implementations + API (Network) + Persistence DB
+* **Presentation Layer (MVVM)** = ViewModels + Views
+
+![Alt text](ReadMeImages/CleanArchitectureDependencies.png?raw=true "Modules Dependencies")
+
 ### Why it’s popular:
 
  - Clean layering

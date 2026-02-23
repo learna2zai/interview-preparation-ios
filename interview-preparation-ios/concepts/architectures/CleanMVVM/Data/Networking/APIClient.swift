@@ -27,11 +27,15 @@ final class APIClient: APIClientProtocol {
     func login(email: String, passowrd: String) async throws -> Bool {
         // store token details after login
         
-//        let (data, response) = try await URLSession.shared.data(from: URL(string: "https://jsonplaceholder.typicode.com/users")!)
-//        let users = try JSONDecoder().decode([UserDTO].self, from: data)
-//        
-//        print(users)
-//        
+        let (data, _) = try await URLSession.shared.data(
+            from: URL(string: "https://jsonplaceholder.typicode.com/users")!,
+            delegate:  SSLCertificatePinning() //SSLPublicKeyPinning()
+        )
+        
+        let users = try JSONDecoder().decode([UserDTO].self, from: data)
+        
+        print(users)
+        
         return true
     }
     
