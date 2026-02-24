@@ -18,6 +18,9 @@ struct DashboardView: View {
         Text("Hello, World!")
             .onAppear {
                 dashboardViewModel.trckScreenView()
+                Task {
+                    await dashboardViewModel.fetchUserDetails()
+                }
             }
     }
 }

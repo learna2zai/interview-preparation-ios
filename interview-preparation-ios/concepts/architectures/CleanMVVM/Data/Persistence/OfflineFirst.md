@@ -4,14 +4,14 @@ Modern apps must work without internet.
 
 Offline-First means:
 
-| The app works fully without internet. Network sync is secondary.
+*`The app works fully without internet. Network sync is secondary.`*
 
 Key idea:
 
 Local database is the source of truth.
 Network updates the local database — not the UI directly.
 
-🎯 Principles
+**🎯 Principles**
  - Local DB is source of truth
  - Network syncs in background
  - Writes are queued
@@ -46,7 +46,7 @@ Note: When remote completes → Local DB updates → UI refreshes automatically.
  Offline writes must be queued.
  Example: User creates a task offline.
  
-| Create task → Save locally with "pending" status → SyncEngine sends to server later
+> Create task → Save locally with "pending" status → SyncEngine sends to server later
 
 **Sync Engine Design**
 

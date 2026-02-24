@@ -26,12 +26,18 @@ final class APIClient: APIClientProtocol {
     
     func login(email: String, passowrd: String) async throws -> Bool {
         // store token details after login
+//        
+//        let (data, _) = try await URLSession.shared.data(
+//            from: URL(string: "https://jsonplaceholder.typicode.com/users")!,
+//            delegate:  SSLCertificatePinning() //SSLPublicKeyPinning()
+//        )
+//        
+//        let users = try JSONDecoder().decode([UserDTO].self, from: data)
+//        
+//        print(users)
         
-        let (data, _) = try await URLSession.shared.data(
-            from: URL(string: "https://jsonplaceholder.typicode.com/users")!,
-            delegate:  SSLCertificatePinning() //SSLPublicKeyPinning()
-        )
-        
+        let (url, _) = try await URLSession.shared.download(from: URL(string: "https://jsonplaceholder.typicode.com/users")!)
+        let data = try Data(contentsOf: url)
         let users = try JSONDecoder().decode([UserDTO].self, from: data)
         
         print(users)
@@ -45,7 +51,7 @@ final class APIClient: APIClientProtocol {
     }
     
     func fetchProfile() async throws -> UserDTO {
-        return self.userDTO!
+        return UserDTO(id: 1, name: "Some Name", email: "dummy@example.com")
     }
     
     func logout() async throws -> Bool {
