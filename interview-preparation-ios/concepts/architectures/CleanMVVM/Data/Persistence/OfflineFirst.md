@@ -112,6 +112,33 @@ When both local and remote changed:
 }
  ```
  
+**Basic “last write wins” is not enough for serious apps.**
+
+Let’s go advanced.
+
+ - Strategy 1: Versioning (Optimistic Locking)
+```
+var version: Int
+
+{
+  "error": "version_conflict",
+  "serverVersion": 12
+}
+```
+ - Strategy 2: Field-Level Merge 
+ 
+ ```swift
+ func merge(local: Task, remote: Task) -> Task {
+    Task(
+        id: local.id,
+        title: remote.title ?? local.title,
+        isCompleted: remote.isCompleted ?? local.isCompleted,
+        updatedAt: max(local.updatedAt, remote.updatedAt)
+    )
+}
+ 
+ ```
+ 
  ### Example
  
  ```swift
@@ -197,3 +224,32 @@ Offline-first adds:
  - More testing needs
 
 
+```
+┌──────────────────────────────┐
+│        Presentation Layer    │
+│  SwiftUI Views + ViewModels  │
+└───────────────┬──────────────┘
+                ↓
+┌──────────────────────────────┐
+│         Domain Layer         │
+│  Entities + UseCases         │
+└───────────────┬──────────────┘
+                ↓
+┌────────────────────────────────────────┐
+│           Data Layer                   │
+│                                        │
+│   Repository                           │
+│      ↓                                 │
+│  ┌───────────────┐  ┌──────────────┐   │
+│  │ SwiftData     │  │ APIClient    │   │
+│  │ (Local DB)    │  │ +            │   │
+│  │ Source of     │  │ Interceptors │   │
+│  │ Truth         │  └──────────────┘   │
+│  └───────────────┘            ↑        │
+│         ↑                     │        │
+│     SyncEngine  ←─────────────┘        │
+│         ↑                              │
+│     BackgroundTasks                    │
+└────────────────────────────────────────┘
+
+```
