@@ -186,7 +186,7 @@ MyApp/
 └── Resources/
 ```
 
-## Analytics
+## 2️⃣ Analytics
 
 ```
 Presentation (ViewModel)
