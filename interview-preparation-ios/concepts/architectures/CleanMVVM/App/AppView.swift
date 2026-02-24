@@ -41,6 +41,16 @@ struct AppView: View {
             }
             
             Tab {
+                TasksDIContainer(core: container.core).makeTaskListView()
+            } label: {
+                VStack {
+                    Image(systemName: "pencil.and.list.clipboard")
+                    Text("Tasks")
+                        .font(.caption)
+                }
+            }
+            
+            Tab {
                 SettingsDIContainer(core: container.core, appViewModel: appViewModel).makeSettingsView()
             } label: {
                  VStack {

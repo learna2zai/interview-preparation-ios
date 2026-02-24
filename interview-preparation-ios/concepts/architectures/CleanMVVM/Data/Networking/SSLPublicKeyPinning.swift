@@ -24,11 +24,8 @@ final class SSLPublicKeyPinning: NSObject, URLSessionDataDelegate {
             return (.performDefaultHandling, nil)
         }
         
-        guard SecTrustEvaluateWithError(serverTrust, nil) else {
-            return (.cancelAuthenticationChallenge, nil)
-        }
-        
-        guard SecTrustGetCertificateCount(serverTrust) > 0,
+        guard SecTrustEvaluateWithError(serverTrust, nil),
+              SecTrustGetCertificateCount(serverTrust) > 0,
                 let certificateChain = SecTrustCopyCertificateChain(serverTrust) as? [SecCertificate] else {
             return (.cancelAuthenticationChallenge, nil)
         }
