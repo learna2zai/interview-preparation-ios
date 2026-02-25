@@ -16,13 +16,13 @@ final class CoreDIContainer {
     }()
     
     init(environment: AppEnvironment) {
+        var baseUrl: String = ""
         switch environment {
-            case .development:
-                self.apiClient = APIClient(baseUrl: "https://jsonplaceholder.typicode.com/")
-            case .staging:
-                self.apiClient = APIClient(baseUrl: "https://jsonplaceholder.typicode.com/")
-            case .production:
-                self.apiClient = APIClient(baseUrl: "https://jsonplaceholder.typicode.com/")
+            case .development, .staging, .production:
+                baseUrl = "https://jsonplaceholder.typicode.com/"
         }
+        self.apiClient = APIClient(baseUrl: baseUrl,
+                                   interceptorPipleline: InterceptorPipeline(interceptors: [LoggingInterceptor()]))
+        
     }
 }

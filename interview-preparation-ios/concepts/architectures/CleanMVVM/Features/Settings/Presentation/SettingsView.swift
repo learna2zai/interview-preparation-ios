@@ -25,6 +25,9 @@ struct SettingsView: View {
                     }
                 }
             }
+            .onAppear {
+                settingsViewModel.trackScreenView()
+            }
     }
 }
 

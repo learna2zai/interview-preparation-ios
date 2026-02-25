@@ -10,20 +10,7 @@ import Foundation
 final class FirebaseAnalyticsService: AnalyticsTracking {
     
     func track(_ event: AnalyticsEvents) {
-        switch event {
-            case .logginTapped:
-               logEvent("login_tapped")
-            case .loginSuccess:
-                logEvent("login_success")
-            case .loginFailed:
-                logEvent("login_failed")
-            case .logout:
-                logEvent("logout")
-            case .viewedDashboard:
-                logEvent("dashboard_viewed")
-            case .registerCompleted:
-                logEvent("register_completed")
-        }
+        logEvent(event.rawValue)
     }
     
     private func logEvent(_ name: String, parameters: [String: Any]? = nil) {

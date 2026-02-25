@@ -22,6 +22,9 @@ struct AppView: View {
                         .makeLoginView(appState: appViewModel)
                 case .dashboard:
                     mainTabView
+                case .register:
+                    RegisterDIContainer(core: container.core)
+                        .makeRegisterView(appViewModel: appViewModel)
             }
         }
         .animation(.easeInOut, value: appViewModel.currentRoute)

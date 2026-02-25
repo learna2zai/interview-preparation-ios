@@ -8,10 +8,19 @@
 import Foundation
 
 enum AnalyticsEvents: String {
-    case logginTapped
-    case loginSuccess
-    case loginFailed
-    case registerCompleted
-    case logout
-    case viewedDashboard
+    
+    case viewedLoginScreen = "login_screen"
+    case logginTapped = "login_tapped"
+    case loginSuccess = "login_success"
+    case loginFailed = "login_failed"
+    
+    case viewedRegisterScreen = "register_screen"
+    case registerTapped = "register_tapped"
+    case registerfailed = "register_failed"
+    case registerSuccess = "register_success"
+    
+    case viewedDashboardScreen = "dashboard_screen"
+    
+    case viewedSettingsScreen = "settings_screen"
+    case logout = "logout"
 }

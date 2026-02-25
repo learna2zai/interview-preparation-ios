@@ -7,8 +7,10 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
-enum AppRoute: Equatable {
+enum AppRoute {
+    case register
     case login
     case dashboard
 }
@@ -16,6 +18,7 @@ enum AppRoute: Equatable {
 @Observable
 final class AppViewModel {
     
+    var path = NavigationPath()
     var currentRoute: AppRoute = .login
     private var isLoggIn: Bool = false
     

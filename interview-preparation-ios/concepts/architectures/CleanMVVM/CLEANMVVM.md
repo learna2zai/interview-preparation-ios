@@ -1,6 +1,6 @@
 ## Clean Architecture + MVVM (Clean. Testable. Scalable.)
 
-### 🔹 What is Clean Architecture?
+<h3><p align="center"> 🔹 What is Clean Architecture? </p></h3>
 
 Introduced by Robert C. Martin (Uncle Bob), Clean Architecture is based on layers arranged in concentric circles.
 
@@ -62,7 +62,9 @@ View → ViewModel → UseCase → Repository → API
 * **Data Repositories Layer** = Repositories Implementations + API (Network) + Persistence DB
 * **Presentation Layer (MVVM)** = ViewModels + Views
 
+
 ![Alt text](../../../ReadMeImages/CleanArchitectureDependencies.png)
+
 
 ### Why it’s popular:
 
