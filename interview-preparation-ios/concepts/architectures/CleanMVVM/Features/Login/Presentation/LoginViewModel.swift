@@ -9,11 +9,11 @@ import Foundation
 import Combine
 
 @Observable
-final class LoginViewModel {
+final class LoginViewModel: ViewModel {
     
     var email: String = ""
     var password: String = ""
-    var isLoding: Bool = false
+    var isLoading: Bool = false
     var errorMessage: String? = nil
     
     private let loginUseCase: LoginUseCaseProtocol
@@ -29,10 +29,18 @@ final class LoginViewModel {
         self.analytics = analytics
     }
     
+    func trackScreenView() {
+        analytics.track(.viewedLoginScreen)
+    }
+    
+    func goToRegister() {
+        self.appViewModel.currentRoute = .register
+    }
+    
     func login() async {
         analytics.track(.logginTapped)
-        isLoding = true
-        defer { isLoding = false }
+        isLoading = true
+        defer { isLoading = false }
         do {
             let result = try await loginUseCase.execute(email: email, password: password)
             self.appViewModel.setLoggedInStatus(result)

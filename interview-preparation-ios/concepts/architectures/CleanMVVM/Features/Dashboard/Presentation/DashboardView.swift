@@ -15,7 +15,6 @@ struct DashboardView: View {
     }
     
     var body: some View {
-        
         List {
             ForEach(dashboardViewModel.users) { user in
                 VStack(alignment: .leading) {
@@ -36,7 +35,7 @@ struct DashboardView: View {
             }
         })
         .onAppear {
-            dashboardViewModel.trckScreenView()
+            dashboardViewModel.trackScreenView()
             Task {
                 await dashboardViewModel.fetchUserDetails()
             }

@@ -9,12 +9,12 @@ import Foundation
 import Combine
 
 @Observable
-final class SettingsViewModel {
+final class SettingsViewModel: ViewModel {
     
     private let logoutUseCase: LogoutUseCase
     private let appVierwModel: AppViewModel
     
-    var isLoding: Bool = false
+    var isLoading: Bool = false
     var errorMessage: String? = nil
     
     init(usecase: LogoutUseCase, appViewModel: AppViewModel) {
@@ -26,9 +26,13 @@ final class SettingsViewModel {
     var isEmailNotificationEnabled: Bool = false
     var isSMSNotificationEnabled: Bool = false
     
+    func trackScreenView() {
+        //
+    }
+    
     func logout() async {
-        isLoding = true
-        defer { isLoding = false }
+        isLoading = true
+        defer { isLoading = false }
         do {
             let result = try await logoutUseCase.execute()
             self.appVierwModel.setLoggedInStatus(result)

@@ -9,7 +9,8 @@ import Foundation
 import Combine
 
 @Observable
-final class DashboardViewModel {
+final class DashboardViewModel: ViewModel {
+    
     var users: [User] = []
     var isLoading: Bool = false
     var errorMessage: String? = nil
@@ -22,8 +23,8 @@ final class DashboardViewModel {
         self.analytics = analytics
     }
     
-    func trckScreenView() {
-        analytics.track(.viewedDashboard)
+    func trackScreenView() {
+        analytics.track(.viewedDashboardScreen)
     }
     
     func fetchUserDetails() async {

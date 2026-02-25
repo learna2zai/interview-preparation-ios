@@ -16,31 +16,45 @@ struct LoginView: View {
     }
     
     var body: some View {
-        VStack {
-            TextField("Emial", text: $loginViewModel.email)
-                .textFieldStyle(.roundedBorder)
+        ZStack {
+            LinearGradient(colors: [.orange,.yellow, .pink], startPoint: .top, endPoint: .bottom)
+                .ignoresSafeArea()
             
-            SecureField("Password", text: $loginViewModel.password)
-                .textFieldStyle(.roundedBorder)
-            Button {
-                Task {
-                   await loginViewModel.login()
+            VStack {
+                VStack(spacing: 20) {
+                    TextField("Emial", text: $loginViewModel.email)
+                    SecureField("Password", text: $loginViewModel.password)
                 }
-            } label: {
-                Text("Login")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.center)
+                .textFieldStyle(.roundedBorder)
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
+                
+                HStack {
+                    Button("Login") {
+                        Task {
+                            await loginViewModel.login()
+                        }
+                    }
+                    Button("Register") {
+                        loginViewModel.goToRegister()
+                    }
+                }
+                .padding(.top, 20)
+                .buttonStyle(.borderedProminent)
+                
+                if loginViewModel.isLoading {
+                    ProgressView()
+                }
+                if let error = loginViewModel.errorMessage {
+                    Text(error)
+                        .foregroundColor(.red)
+                }
             }
-            if loginViewModel.isLoding {
-                ProgressView()
-            }
-            if let error = loginViewModel.errorMessage {
-                Text(error)
-                    .foregroundColor(.red)
-            }
+            .padding()
         }
-        .padding()
+        .onAppear {
+            loginViewModel.trackScreenView()
+        }
         .navigationTitle(Text("Login"))
         .navigationBarTitleDisplayMode(.inline)
     }

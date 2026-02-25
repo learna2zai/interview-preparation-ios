@@ -9,8 +9,8 @@ import Foundation
 import Combine
 
 @Observable
-final class RegisterViewModel {
-    
+final class RegisterViewModel: ViewModel {
+
     var name: String = ""
     var email: String = ""
     var password: String = ""
@@ -19,9 +19,21 @@ final class RegisterViewModel {
     var errorMessage: String? = nil
     
     private let registerUseCase: RegisterUseCase
+    private let appViewModel: AppViewModel
+    private let analytics: AnalyticsTracking
     
-    init(usecase: RegisterUseCase) {
+    init(usecase: RegisterUseCase, appViewModel: AppViewModel, analytics: AnalyticsTracking ) {
         self.registerUseCase = usecase
+        self.appViewModel = appViewModel
+        self.analytics = analytics
+    }
+    
+    func trackScreenView() {
+        analytics.track(.viewedRegisterScreen)
+    }
+    
+    func goToLogin() {
+        appViewModel.currentRoute = .login
     }
     
     func register() async {
