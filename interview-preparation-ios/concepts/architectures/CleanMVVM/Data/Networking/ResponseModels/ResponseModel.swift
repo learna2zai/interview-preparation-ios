@@ -14,3 +14,9 @@ extension UserResponseModel {
         UserDTO(id: id, name: name, email: email)
     }
 }
+
+struct LoginResponseModel: Codable {
+    let accessToken: String
+    let refreshToken: String
+    let expiresIn: Int
+}

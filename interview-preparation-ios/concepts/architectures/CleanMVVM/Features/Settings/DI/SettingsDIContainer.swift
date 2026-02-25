@@ -10,7 +10,8 @@ import Foundation
 final class SettingsDIContainer {
     
     private let core: CoreDIContainer
-    private lazy var respository = AuthRepositoryImpl(apiClient: core.apiClient)
+    private lazy var respository = AuthRepositoryImpl(apiClient: core.apiClient,
+                                                      tokenStore: core.tokenStore)
     
     private let appViewModel: AppViewModel
     

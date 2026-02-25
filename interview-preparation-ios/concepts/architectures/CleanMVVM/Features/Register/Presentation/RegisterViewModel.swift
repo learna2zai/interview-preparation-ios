@@ -37,12 +37,15 @@ final class RegisterViewModel: ViewModel {
     }
     
     func register() async {
+        analytics.track(.registerTapped)
         isLoading = true
         defer { isLoading = false }
         
         do {
             _ = try await registerUseCase.execute(name: name, email: email, password: password)
+            analytics.track(.registerSuccess)
         } catch {
+            analytics.track(.registerfailed)
             self.errorMessage = error.localizedDescription
         }
     }

@@ -10,19 +10,17 @@ import Foundation
 final class CoreDIContainer {
     
     let apiClient: APIClient
-    
-    lazy var analyticsService: AnalyticsTracking = {
-        FirebaseAnalyticsService()
-    }()
+    let tokenStore = TokenStore()
+    lazy var analyticsService = AnalyticsService()
     
     init(environment: AppEnvironment) {
-        var baseUrl: String = ""
-        switch environment {
-            case .development, .staging, .production:
-                baseUrl = "https://jsonplaceholder.typicode.com/"
-        }
-        self.apiClient = APIClient(baseUrl: baseUrl,
-                                   interceptorPipleline: InterceptorPipeline(interceptors: [LoggingInterceptor()]))
+
+        self.apiClient = APIClient(baseUrl: environment.baseURL,
+                                   interceptorPipleline:
+                                    InterceptorPipeline(interceptors: [
+                                        AuthInterceptor(tokenStore: tokenStore),
+                                        LoggingInterceptor()
+                                    ]))
         
     }
 }
