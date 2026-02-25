@@ -9,20 +9,19 @@ import Foundation
 
 final class AuthInterceptor: NetworkInterceptor {
     
-    private let tokenProvider: () async -> String?
+    private let tokenStore: TokenStoring
     
-    init(tokenProvider: @escaping () async -> String?) {
-        self.tokenProvider = tokenProvider
+    init(tokenStore: TokenStoring) {
+        self.tokenStore = tokenStore
     }
     
     func adapt(_ request: URLRequest) async throws -> URLRequest {
         
         var newRequest = request
         
-        if let token = await tokenProvider() {
-            newRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        if let accessToken = try await tokenStore.getAccessToken() {
+            newRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         }
-        
         return newRequest
     }
     

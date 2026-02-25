@@ -1,4 +1,4 @@
-### Interceptor-Based Network Layer 
+## Interceptor-Based Network Layer 
 
 ```
 Presentation (SwiftUI Views)
@@ -17,9 +17,10 @@ URLSession
 
 ```
  
-🎯 Goals of Interceptor-Based Networking
+### 🎯 Goals of Interceptor-Based Networking
 
- - An interceptor allows you to:
+ An interceptor allows you to:
+
  - Add auth tokens automatically
  - Log requests & responses
  - Handle retries

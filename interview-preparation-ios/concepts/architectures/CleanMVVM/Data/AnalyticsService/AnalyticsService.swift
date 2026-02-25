@@ -1,5 +1,5 @@
 //
-//  FirebaseAnalyticsService.swift
+//  AnalyticsService.swift
 //  interview-preparation-ios
 //
 //  Created by Ganesh on 24/02/26.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class FirebaseAnalyticsService: AnalyticsTracking {
+final class AnalyticsService: AnalyticsTracking {
     
     func track(_ event: AnalyticsEvents) {
         logEvent(event.rawValue)

@@ -9,6 +9,36 @@ Introduced by Robert C. Martin (Uncle Bob), Clean Architecture is based on layer
 Core idea:
 > 👉 Dependencies always point inward.
 
+**Layer Breakdown**
+
+* 🟣 Presentation
+
+  - SwiftUI Views
+  - ViewModels
+  - UI Models
+
+* 🔵 Domain
+
+  - Entities
+  - UseCases
+  - Repository Protocols
+  - Business Rules
+
+* 🟢 Data
+
+  - Repository Implementations
+  - DTOs
+  - APIClient
+  - Interceptors
+  - Cache
+  - Mappers
+
+* ⚫ Infrastructure
+
+  - URLSession
+  - File storage
+  - Metrics
+
 ### 🔹 Typical Layers
 
 | Entities – Enterprise business rules

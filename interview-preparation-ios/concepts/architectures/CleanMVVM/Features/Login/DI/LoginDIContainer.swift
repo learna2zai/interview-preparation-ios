@@ -10,7 +10,8 @@ import Foundation
 final class LoginDIContainer {
     
     private let core: CoreDIContainer
-    private lazy var repository = AuthRepositoryImpl(apiClient: core.apiClient)
+    private lazy var repository = AuthRepositoryImpl(apiClient: core.apiClient,
+                                                     tokenStore: core.tokenStore)
     
     init(core: CoreDIContainer) {
         self.core = core

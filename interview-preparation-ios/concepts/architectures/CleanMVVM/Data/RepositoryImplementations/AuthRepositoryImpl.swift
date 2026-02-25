@@ -46,15 +46,19 @@ struct RegisterRequest: APIRequest {
 final class AuthRepositoryImpl: AuthRepository {
  
     private let apiClient: APIClient
+    private let tokenStore: TokenStoring
     
-    init(apiClient: APIClient) {
+    init(apiClient: APIClient, tokenStore: TokenStoring = TokenStore()) {
         self.apiClient = apiClient
+        self.tokenStore = tokenStore
     }
     
     func login(email: String, password: String) async throws -> Bool {
         let loginUserDTO = LoginUserDTO(email: email, password: password)
         let encodedData = try JSONEncoder().encode(loginUserDTO)
-        return try await apiClient.send(LoginRequest(body: encodedData))
+        let response: LoginResponseModel = try await apiClient.send(LoginRequest(body: encodedData))
+        try await tokenStore.save(accessToken: response.accessToken, refreshToken: response.refreshToken)
+        return true
     }
     
     func register(name: String, email: String, password: String) async throws -> Bool {
@@ -65,6 +69,7 @@ final class AuthRepositoryImpl: AuthRepository {
     
     func logout() async throws -> Bool {
 //        try await apiClient.logout()
+        try await tokenStore.clearTokens()
         return false
     }
 }
