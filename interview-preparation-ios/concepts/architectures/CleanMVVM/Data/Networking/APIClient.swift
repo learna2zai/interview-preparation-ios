@@ -7,54 +7,69 @@
 
 import Foundation
 
-protocol APIClientProtocol {
-    func login(email: String, passowrd: String) async throws -> Bool
-    func register(name: String, email: String, password: String) async throws -> Bool
-    func fetchProfile() async throws -> UserDTO
-    func logout() async throws -> Bool
+protocol APIRequest {
+    var path: String { get }
+    var method: HTTPMethod { get }
+    var headers: [String: String] { get }
+    var body: Data? { get set}
+    var queryItems: [URLQueryItem]? { get }
 }
 
-final class APIClient: APIClientProtocol {
-    
-    var userDTO: UserDTO?
+enum HTTPMethod: String {
+    case GET, POST, PUT, DELETE
+}
+
+protocol NetworkClient {
+    func send<T: Decodable>(_ request: APIRequest) async throws -> T
+}
+
+final class APIClient: NetworkClient {
     
     private let baseUrl: String
-    
-    init(baseUrl: String) {
+    private let session: URLSession
+    private let interceptorPipleline: InterceptorPipeline
+
+    init(baseUrl: String, session: URLSession = .shared, interceptorPipleline: InterceptorPipeline) {
         self.baseUrl = baseUrl
+        self.session = session
+        self.interceptorPipleline = interceptorPipleline
     }
-    
-    func login(email: String, passowrd: String) async throws -> Bool {
-        // store token details after login
-//        
-//        let (data, _) = try await URLSession.shared.data(
-//            from: URL(string: "https://jsonplaceholder.typicode.com/users")!,
-//            delegate:  SSLCertificatePinning() //SSLPublicKeyPinning()
-//        )
-//        
-//        let users = try JSONDecoder().decode([UserDTO].self, from: data)
-//        
-//        print(users)
+
+    func send<T>(_ request: any APIRequest) async throws -> T where T : Decodable {
+        guard let url = URL(string: baseUrl),
+                var urlComponents = URLComponents(url: url.appendingPathComponent(request.path),
+                                                                                resolvingAgainstBaseURL: false) else {
+            throw URLError(.badURL)
+        }
+
+        urlComponents.queryItems = request.queryItems
         
-        let (url, _) = try await URLSession.shared.download(from: URL(string: "https://jsonplaceholder.typicode.com/users")!)
-        let data = try Data(contentsOf: url)
-        let users = try JSONDecoder().decode([UserDTO].self, from: data)
+        var urlRequest = URLRequest(url: urlComponents.url!)
+        urlRequest.httpMethod = request.method.rawValue
+        urlRequest.httpBody = request.body
+        urlRequest.timeoutInterval = 30.0
         
-        print(users)
+        request.headers.forEach({ urlRequest.setValue($0.value, forHTTPHeaderField: $0.key) })
         
-        return true
+        return try await execute(urlRequest, attempt: 0)
     }
     
-    func register(name: String, email: String, password: String) async throws -> Bool {
-        self.userDTO = UserDTO(id: 1, name: name, email: email)
-        return true
-    }
-    
-    func fetchProfile() async throws -> UserDTO {
-        return UserDTO(id: 1, name: "Some Name", email: "dummy@example.com")
-    }
-    
-    func logout() async throws -> Bool {
-        return false
+    private func execute<T>(_ urlRequest: URLRequest, attempt: Int) async throws -> T where T : Decodable {
+        do {
+            let adaptedRequest = try await interceptorPipleline.adapt(urlRequest)
+            let (data, response) = try await session.data(for: adaptedRequest)
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                    200..<300 ~= httpResponse.statusCode else {
+                throw URLError(.badServerResponse)
+            }
+            
+            return try JSONDecoder().decode(T.self, from: data)
+        } catch {
+            if attempt < 3, try await interceptorPipleline.shouldRetry(urlRequest, error: error, attempt: attempt) {
+                return try await execute(urlRequest, attempt: attempt + 1)
+            }
+            throw error
+        }
     }
 }

@@ -10,13 +10,15 @@ import Combine
 
 @Observable
 final class DashboardViewModel {
-    var user: User?
+    var users: [User] = []
+    var isLoading: Bool = false
+    var errorMessage: String? = nil
     
-    private let fetchProfileUseCase: FetchProfileUseCase
+    private let fetchUsersUseCase: FetchUsersUseCase
     private let analytics: AnalyticsTracking
     
-    init(usecase: FetchProfileUseCase, analytics: AnalyticsTracking) {
-        self.fetchProfileUseCase = usecase
+    init(usecase: FetchUsersUseCase, analytics: AnalyticsTracking) {
+        self.fetchUsersUseCase = usecase
         self.analytics = analytics
     }
     
@@ -25,11 +27,12 @@ final class DashboardViewModel {
     }
     
     func fetchUserDetails() async {
+        isLoading = true
+        defer { isLoading = false }
         do {
-            let user = try await fetchProfileUseCase.execute()
-            self.user = user
+             users = try await fetchUsersUseCase.execute()
         } catch {
-            print("Handel Error \(error.localizedDescription)")
+            self.errorMessage = error.localizedDescription
         }
     }
 }

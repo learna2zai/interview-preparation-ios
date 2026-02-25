@@ -15,13 +15,33 @@ struct DashboardView: View {
     }
     
     var body: some View {
-        Text("Hello, World!")
-            .onAppear {
-                dashboardViewModel.trckScreenView()
-                Task {
-                    await dashboardViewModel.fetchUserDetails()
+        
+        List {
+            ForEach(dashboardViewModel.users) { user in
+                VStack(alignment: .leading) {
+                    Text(user.name)
+                        .font(.headline)
+                    
+                    Text(user.email)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
                 }
             }
+        }
+        .overlay(content: {
+            if dashboardViewModel.users.isEmpty && !dashboardViewModel.isLoading {
+                ContentUnavailable()
+            } else if dashboardViewModel.isLoading {
+                ProgressView().controlSize(.large)
+            }
+        })
+        .onAppear {
+            dashboardViewModel.trckScreenView()
+            Task {
+                await dashboardViewModel.fetchUserDetails()
+            }
+        }
+        .navigationTitle(Text("Dashboard"))
     }
 }
 
