@@ -37,8 +37,10 @@ struct Architecture: View {
                     case .cleanArchitectureMVVM:
                         let container = AppDIContainer(.development, )
                         AppView(appViewModel: container.appViewModel, container: container)
+                            .toolbar(.hidden, for: .tabBar)
                     default:
                         ContentUnavailable()
+                            .toolbar(.hidden, for: .tabBar)
                 }
             }
         }

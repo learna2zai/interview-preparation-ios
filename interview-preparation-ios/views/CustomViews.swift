@@ -12,6 +12,7 @@ struct CustomViews: View {
         List {
             Section {
                 NavigationLink("View Builder", destination: ViewBuilderExample())
+                NavigationLink("View Animations", destination: AnimationView())
             }
         }
         .navigationTitle(Text("Custom Views"))
