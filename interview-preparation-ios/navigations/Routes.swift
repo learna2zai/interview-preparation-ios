@@ -12,9 +12,15 @@ enum BasicExplorationsRoutes: String, CaseIterable {
     case swiftData
     case swiftCharts
     case spm
+    case architecture
 }
 
 enum ArchitectureRoutes: String, CaseIterable {
     case cleanArchitectureMVVM
     case redux
+}
+
+enum AppPath: String, Hashable, CaseIterable {
+    case basic
+    case architecture
 }

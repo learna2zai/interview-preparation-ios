@@ -55,8 +55,6 @@ struct RegisterView: View {
         .onAppear {
             registerViewModel.trackScreenView()
         }
-        .navigationTitle(Text("Register"))
-        .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
     }
         

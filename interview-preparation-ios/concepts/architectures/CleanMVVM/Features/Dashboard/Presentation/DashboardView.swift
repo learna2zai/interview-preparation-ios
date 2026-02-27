@@ -15,32 +15,38 @@ struct DashboardView: View {
     }
     
     var body: some View {
-        List {
-            ForEach(dashboardViewModel.users) { user in
-                VStack(alignment: .leading) {
-                    Text(user.name)
-                        .font(.headline)
-                    
-                    Text(user.email)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+            List {
+                ForEach(dashboardViewModel.users) { user in
+                    VStack(alignment: .leading) {
+                        Text(user.name)
+                            .font(.headline)
+                        
+                        Text(user.email)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
                 }
             }
-        }
-        .overlay(content: {
-            if dashboardViewModel.users.isEmpty && !dashboardViewModel.isLoading {
-                ContentUnavailable()
-            } else if dashboardViewModel.isLoading {
-                ProgressView().controlSize(.large)
+            .shimmer(dashboardViewModel.isLoading)
+            .overlay(content: {
+                if dashboardViewModel.users.isEmpty && !dashboardViewModel.isLoading {
+                    ContentUnavailableView("No data to display.",
+                                           systemImage: "person.bubble",
+                                           description: Text("Please add some users to see them here."))
+                }
+//                else if dashboardViewModel.isLoading {
+//                    ProgressView().controlSize(.large)
+//                }
+            })
+            .onAppear {
+                dashboardViewModel.trackScreenView()
+                Task {
+                    if dashboardViewModel.users.isEmpty {
+                        await dashboardViewModel.fetchUserDetails()
+                    }
+                }
             }
-        })
-        .onAppear {
-            dashboardViewModel.trackScreenView()
-            Task {
-                await dashboardViewModel.fetchUserDetails()
-            }
-        }
-        .navigationTitle(Text("Dashboard"))
+            .navigationTitle("Dashboard")
     }
 }
 

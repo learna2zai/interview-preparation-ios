@@ -12,21 +12,19 @@ enum Tabs: String, Equatable, Hashable, Identifiable {
         self.rawValue
     }
     
-    case home
-    case architecture
+    case dashboard
+    case tasks
     case settings
-    case messages
     case search
     
     case sent
     case received
     case draft
-    
 }
 
 struct AppTabView: View {
     @State private var isShowAccessory: Bool = true
-    @State private var selectedTab: Tabs = .home
+    @State private var selectedTab: Tabs = .dashboard
     
     // Size classes is a trait that definesm the available spece in a dimension. Two type: Horizontal, Vertical
     @Environment(\.horizontalSizeClass) var sizeClass
@@ -38,22 +36,31 @@ struct AppTabView: View {
     @AppStorage("tab-customization")
     private var customization: TabViewCustomization = .init()
     
+    @Binding var appViewModel: AppViewModel
+    var container: AppDIContainer
+    
+    
     var body: some View {
         TabView(selection: $selectedTab) {
-            Tab("Home", systemImage: "house", value: .home) {
-                BasicExplorations()
+            
+            Tab("Dashboard", systemImage: "house", value: .dashboard) {
+                NavigationStack {
+                    DashboardDIContainer(core: container.core).makeDashboardView()}
             }
-            .customizationID("com.myApp.home")
-            Tab("Architecture", systemImage: "xmark.triangle.circle.square", value: .architecture) {
-                Architecture()
+            .customizationID("com.myApp.dashboard")
+            
+            Tab("Tasks", systemImage: "pencil.and.list.clipboard", value: .tasks) {
+                NavigationStack {
+                    TasksDIContainer(core: container.core).makeTaskListView()
+                }
             }
-            .customizationID("com.myApp.architecture")
+            .customizationID("com.myApp.tasks")
             
             Tab("Settings", systemImage: "gear", value: .settings) {
-                Settings()
+                SettingsDIContainer(core: container.core, appViewModel: appViewModel).makeSettingsView()
             }
             .customizationID("com.myApp.settings")
-            
+
 //            Tab("Search", systemImage: "magnifyingglass", value: .search, role: .search) {}
 //                .customizationID("com.myApp.search")
             
@@ -90,11 +97,9 @@ struct AppTabView: View {
 //        }
         .tabViewStyle(.sidebarAdaptable)
         .tabViewCustomization($customization)
-//        .searchable(text: $searchQuery, placement: .navigationBarDrawer)
-//        .searchPresentationToolbarBehavior(.avoidHidingContent)
     }
 }
 
-#Preview {
-    AppTabView()
-}
+//#Preview {
+//    AppTabView()
+//}

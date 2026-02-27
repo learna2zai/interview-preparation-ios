@@ -38,6 +38,10 @@ final class LoginViewModel: ViewModel {
     }
     
     func login() async {
+        if email.isEmpty || password.isEmpty {
+            errorMessage = "Please fill in all the fields."
+            return
+        }
         analytics.track(.logginTapped)
         isLoading = true
         defer { isLoading = false }

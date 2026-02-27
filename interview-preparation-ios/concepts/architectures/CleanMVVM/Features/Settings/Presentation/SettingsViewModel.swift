@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 @Observable
 final class SettingsViewModel: ViewModel {
@@ -16,6 +17,13 @@ final class SettingsViewModel: ViewModel {
     
     var isLoading: Bool = false
     var errorMessage: String? = nil
+    
+    var isPushNotificationsOn: Bool = true
+    var isEmailNotificationOn: Bool = false
+    var isMobileNotificationOn: Bool = true
+    var bgColor: Color = .blue
+    var date: Date = Date()
+    var dates: Set<DateComponents> = []
     
     init(usecase: LogoutUseCase, appViewModel: AppViewModel) {
         self.logoutUseCase = usecase
@@ -35,7 +43,7 @@ final class SettingsViewModel: ViewModel {
         defer { isLoading = false }
         do {
             let result = try await logoutUseCase.execute()
-            self.appVierwModel.setLoggedInStatus(result)
+            self.appVierwModel.setLoggedInStatus(!result)
         } catch {
             self.errorMessage = error.localizedDescription
         }

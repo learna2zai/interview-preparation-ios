@@ -31,7 +31,7 @@ final class DashboardViewModel: ViewModel {
         isLoading = true
         defer { isLoading = false }
         do {
-             users = try await fetchUsersUseCase.execute()
+            users = try await fetchUsersUseCase.execute()
         } catch {
             self.errorMessage = error.localizedDescription
         }

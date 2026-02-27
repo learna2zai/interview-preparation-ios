@@ -12,7 +12,7 @@ struct LoginRequest: APIRequest {
     var headers: [String : String]
     var body: Data?
     var queryItems: [URLQueryItem]?
-    var path: String { "/login" }
+    var path: String { "/auth/mobile/login" }
     
     init(method: HTTPMethod = .POST,
          headers: [String : String] = [:],
@@ -43,12 +43,30 @@ struct RegisterRequest: APIRequest {
     }
 }
 
+struct LogoutRequest: APIRequest {
+    var method: HTTPMethod
+    var headers: [String : String]
+    var body: Data?
+    var queryItems: [URLQueryItem]?
+    var path: String { "/auth/mobile/logout" }
+    
+    init(method: HTTPMethod = .POST,
+         headers: [String : String] = [:],
+         body: Data? = nil,
+         queryItems: [URLQueryItem]? = nil) {
+        self.method = method
+        self.headers = headers
+        self.body = body
+        self.queryItems = queryItems
+    }
+}
+
 final class AuthRepositoryImpl: AuthRepository {
  
     private let apiClient: APIClient
     private let tokenStore: TokenStoring
     
-    init(apiClient: APIClient, tokenStore: TokenStoring = TokenStore()) {
+    init(apiClient: APIClient, tokenStore: TokenStoring) {
         self.apiClient = apiClient
         self.tokenStore = tokenStore
     }
@@ -56,6 +74,7 @@ final class AuthRepositoryImpl: AuthRepository {
     func login(email: String, password: String) async throws -> Bool {
         let loginUserDTO = LoginUserDTO(email: email, password: password)
         let encodedData = try JSONEncoder().encode(loginUserDTO)
+        try await tokenStore.clearTokens()
         let response: LoginResponseModel = try await apiClient.send(LoginRequest(body: encodedData))
         try await tokenStore.save(accessToken: response.accessToken, refreshToken: response.refreshToken)
         return true
@@ -68,8 +87,11 @@ final class AuthRepositoryImpl: AuthRepository {
     }
     
     func logout() async throws -> Bool {
-//        try await apiClient.logout()
+        let refreshToken = try await tokenStore.getRefreshToken()
+        let encodedData = try JSONEncoder().encode(["token": refreshToken ?? ""])
         try await tokenStore.clearTokens()
-        return false
+        let response: LogoutResponseModel = try await apiClient.send(LogoutRequest(body: encodedData))
+        
+        return response.status
     }
 }

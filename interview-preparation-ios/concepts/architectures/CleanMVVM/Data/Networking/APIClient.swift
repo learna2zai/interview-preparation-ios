@@ -50,8 +50,9 @@ final class APIClient: NetworkClient {
         urlRequest.timeoutInterval = 30.0
         
         request.headers.forEach({ urlRequest.setValue($0.value, forHTTPHeaderField: $0.key) })
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        return try await execute(urlRequest, attempt: 0)
+        return try await execute(urlRequest, attempt: 1)
     }
     
     private func execute<T>(_ urlRequest: URLRequest, attempt: Int) async throws -> T where T : Decodable {
@@ -66,7 +67,11 @@ final class APIClient: NetworkClient {
             
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
-            if attempt < 3, try await interceptorPipleline.shouldRetry(urlRequest, error: error, attempt: attempt) {
+            print(error.localizedDescription)
+            if attempt < 3,
+                try await interceptorPipleline.shouldRetry(urlRequest,
+                                                           error: error,
+                                                           attempt: attempt) {
                 return try await execute(urlRequest, attempt: attempt + 1)
             }
             throw error

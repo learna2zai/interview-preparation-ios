@@ -35,7 +35,7 @@ final actor TokenStore: TokenStoring {
     
     func save(accessToken: String, refreshToken: String) async throws {
         try insert(key: .accessToken, value: accessToken)
-        try insert(key: .accessToken, value: refreshToken)
+        try insert(key: .refreshToken, value: refreshToken)
     }
     
     func getAccessToken() async throws -> String? {
@@ -58,53 +58,47 @@ extension TokenStore {
     
     private func insert(key: Keys, value: String) throws {
         let data = Data(value.utf8)
-        
         try delete(key: key)
         
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: key,
+            kSecAttrAccount as String: key.rawValue,
             kSecAttrService as String: service,
             kSecValueData as String: data
         ]
         
-        let status = SecItemAdd(query as CFDictionary, nil)
-        guard status == errSecSuccess else {
-            throw TokenStoreError.unhandledError(status.description)
-        }
+        SecItemAdd(query as CFDictionary, nil)
     }
     
     private func read(key: Keys) throws -> String? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: key,
+            kSecAttrAccount as String: key.rawValue,
             kSecAttrService as String: service,
-            kSecReturnData as String: true
+            kSecReturnData as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne
         ]
         
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
         
-        guard status != errSecItemNotFound else { throw TokenStoreError.noDataFound }
-        
         guard status == errSecSuccess,
-              let itemDictionary = item as? [String: Any],
-              let dataValue = itemDictionary[kSecValueData as String] as? Data else {
-            throw TokenStoreError.unhandledError(status.description)
+              let data = item as? Data,
+              let value = String(data: data, encoding: .utf8) else {
+            return nil
         }
-        return String(data: dataValue, encoding: .utf8)
+        
+        return value
     }
     
     private func delete(key: Keys) throws {
         
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: key,
+            kSecAttrAccount as String: key.rawValue,
             kSecAttrService as String: service
         ]
-        let status = SecItemDelete(query as CFDictionary)
-        guard status == errSecSuccess || status == errSecItemNotFound else {
-            throw TokenStoreError.unhandledError(status.description)
-        }
+        
+        SecItemDelete(query as CFDictionary)
     }
 }

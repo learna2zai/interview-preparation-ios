@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AppEnvironment {
+enum AppEnvironment: String, CaseIterable, Equatable {
     case development
     case staging
     case production
@@ -17,7 +17,7 @@ enum AppEnvironment {
             case .development:
                 return "https://jsonplaceholder.typicode.com/"
             case .staging:
-                return "https://api.github.com"
+                return "http://localhost:8080/api"
             case .production:
                 return "https://api.github.com"
         }

@@ -16,11 +16,34 @@ enum AppRoute {
 }
 
 @Observable
-final class AppViewModel {
-    
+final class AppViewModel: ViewModel {
+    var isLoading: Bool = true
+    var errorMessage: String? = nil
+
     var path = NavigationPath()
     var currentRoute: AppRoute = .login
     private var isLoggIn: Bool = false
+    private let tokenStore: TokenStoring
+    
+    init(tokenStore: TokenStoring) {
+        self.tokenStore = tokenStore
+    }
+    
+    func trackScreenView() {
+        //
+    }
+    
+    func checkLoggedInStatus() async {
+        defer { isLoading = false }
+        do {
+            if let token = try await tokenStore.getAccessToken(),
+                token.isEmpty == false {
+                setLoggedInStatus(true)
+            }
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
     
     func setLoggedInStatus(_ status: Bool) {
         isLoggIn = status

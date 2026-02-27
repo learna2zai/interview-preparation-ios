@@ -12,7 +12,7 @@ struct UserListRequest: APIRequest {
     var headers: [String : String]
     var body: Data?
     var queryItems: [URLQueryItem]?
-    var path: String { "/users" }
+    var path: String { "/users/all" }
     
     init(method: HTTPMethod = .GET,
          headers: [String : String] = [:],
@@ -34,6 +34,6 @@ final class UserRepositoryImpl: UserRepository {
     
     func getUsers() async throws -> [User] {
         let users: [UserResponseModel] = try await apiClient.send(UserListRequest())
-        return users.map { $0.toDTO() }.map { $0.toDomainModel() }
+        return users.compactMap { $0.toDTO() }.map { $0.toDomainModel() }
     }
 }

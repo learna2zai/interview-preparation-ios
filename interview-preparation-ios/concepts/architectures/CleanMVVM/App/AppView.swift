@@ -15,54 +15,30 @@ struct AppView: View {
     var container: AppDIContainer
     
     var body: some View {
+        
         Group {
-            switch appViewModel.currentRoute {
-                case .login:
-                    LoginDIContainer(core: container.core)
-                        .makeLoginView(appState: appViewModel)
-                case .dashboard:
-                    mainTabView
-                case .register:
-                    RegisterDIContainer(core: container.core)
-                        .makeRegisterView(appViewModel: appViewModel)
+            if appViewModel.isLoading {
+                ProgressView().controlSize(.large)
+            } else {
+                switch appViewModel.currentRoute {
+                    case .register:
+                        RegisterDIContainer(core: container.core)
+                            .makeRegisterView(appViewModel: appViewModel)
+                    case .login:
+                        LoginDIContainer(core: container.core)
+                            .makeLoginView(appState: appViewModel)
+                    case .dashboard:
+                        AppTabView(appViewModel: $appViewModel, container: container)
+                        
+                }
+            }
+        }
+        .onAppear {
+            Task {
+                await appViewModel.checkLoggedInStatus()
             }
         }
         .animation(.easeInOut, value: appViewModel.currentRoute)
-    }
-    
-    private var mainTabView: some View {
-        
-        TabView {
-            Tab {
-                DashboardDIContainer(core: container.core).makeDashboardView()
-            } label: {
-                VStack {
-                    Image(systemName: "house")
-                    Text("Dashboard")
-                        .font(.caption)
-                }
-            }
-            
-            Tab {
-                TasksDIContainer(core: container.core).makeTaskListView()
-            } label: {
-                VStack {
-                    Image(systemName: "pencil.and.list.clipboard")
-                    Text("Tasks")
-                        .font(.caption)
-                }
-            }
-            
-            Tab {
-                SettingsDIContainer(core: container.core, appViewModel: appViewModel).makeSettingsView()
-            } label: {
-                 VStack {
-                    Image(systemName: "gearshape")
-                    Text("Settings")
-                        .font(.caption)
-                }
-            }
-        }
     }
 }
 

@@ -9,26 +9,18 @@ import SwiftUI
 
 @main
 struct InterviewPreparationApp: App {
-   
     init() {
         BackgroundTaskManager.shared.registerBackgroundTasks()
     }
     
     var body: some Scene {
         WindowGroup {
-            AppTabView()
+            let container = AppDIContainer(.staging)
+            AppView(appViewModel: container.appViewModel, container: container)
                 .onAppear {
                     BackgroundTaskManager.shared.scheduleAppRefresh()
                     BackgroundTaskManager.shared.scheduleProcessing()
                 }
         }
-//        .backgroundTask(.appRefresh("com.companyname.app.refresh")) {
-//            Task {
-//                do {
-//                    let posts = try await AsyncAwaitAPIs.shared.fetshPosts()
-//                    print(posts)
-//                } catch {}
-//            }
-//        }
     }
 }
