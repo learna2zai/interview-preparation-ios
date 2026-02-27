@@ -2,7 +2,7 @@
 //  MockAuthRepository.swift
 //  interview-preparation-iosTests
 //
-//  Created by Ganesh on 23/02/26.
+//  Created on 23/02/26.
 //
 
 import Foundation

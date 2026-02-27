@@ -2,7 +2,7 @@
 //  AnimationView.swift
 //  interview-preparation-ios
 //
-//  Created by Ganesh on 26/02/26.
+//  Created on 26/02/26.
 //
 
 import SwiftUI
