@@ -2,7 +2,7 @@
 //  LoginViewModel.swift
 //  interview-preparation-ios
 //
-//  Created by Ganesh on 23/02/26.
+//  Created on 23/02/26.
 //
 
 import Foundation
@@ -38,6 +38,10 @@ final class LoginViewModel: ViewModel {
     }
     
     func login() async {
+        if email.isEmpty || password.isEmpty {
+            errorMessage = "Please fill in all the fields."
+            return
+        }
         analytics.track(.logginTapped)
         isLoading = true
         defer { isLoading = false }

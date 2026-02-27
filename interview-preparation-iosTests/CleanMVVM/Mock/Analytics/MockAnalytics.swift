@@ -2,7 +2,7 @@
 //  MockAnalytics.swift
 //  interview-preparation-iosTests
 //
-//  Created by Ganesh on 24/02/26.
+//  Created on 24/02/26.
 //
 
 import Foundation

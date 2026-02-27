@@ -2,7 +2,7 @@
 //  DashboardViewModel.swift
 //  interview-preparation-ios
 //
-//  Created by Ganesh on 23/02/26.
+//  Created on 23/02/26.
 //
 
 import Foundation
@@ -31,7 +31,7 @@ final class DashboardViewModel: ViewModel {
         isLoading = true
         defer { isLoading = false }
         do {
-             users = try await fetchUsersUseCase.execute()
+            users = try await fetchUsersUseCase.execute()
         } catch {
             self.errorMessage = error.localizedDescription
         }
