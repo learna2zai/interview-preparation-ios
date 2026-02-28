@@ -40,3 +40,13 @@ extension Color {
         self.init(red: red, green: green, blue: blue, opacity: alpha)
     }
 }
+
+func makeFirstCharBold(of text: String) -> AttributedString {
+    var attributed = AttributedString(text)
+    
+    if let first = attributed.range(of: String(text.prefix(1))) {
+        attributed[first].font = .system(.largeTitle, weight: .bold)
+        attributed[first].foregroundColor = .blue
+    }
+    return attributed
+}

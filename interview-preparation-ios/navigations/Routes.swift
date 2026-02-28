@@ -10,6 +10,7 @@ import Foundation
 enum BasicExplorationsRoutes: String, CaseIterable {
     case customViews
     case swiftData
+    case designpatterns
     case swiftCharts
     case spm
     case architecture
