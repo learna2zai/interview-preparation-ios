@@ -20,6 +20,10 @@ struct BasicExplorations: View {
                 NavigationLink("App Architecture", value: BasicExplorationsRoutes.architecture)
             }
             
+            Section(header: Text("Design Patterns")) {
+                NavigationLink("SOLID + Design Patterns", value: BasicExplorationsRoutes.designpatterns)
+            }
+            
             Section(header: Text("Local storage and Database")) {
                 NavigationLink("Sqlite", value: BasicExplorationsRoutes.swiftData)
             }
@@ -56,6 +60,8 @@ struct BasicExplorations: View {
                     CustomViews()
                 case .architecture:
                     Architecture()
+                case .designpatterns:
+                    DesignPatterns()
                 default:
                     ContentUnavailable()
             }
