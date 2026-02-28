@@ -26,48 +26,60 @@ protocol NetworkClient {
 final class APIClient: NetworkClient {
     
     private let baseUrl: String
-    private let session: URLSession
+    private let appSession: AppSession
+    private let urlSession: URLSession
     private let interceptorPipleline: InterceptorPipeline
+    private let refreshTokenService: RefreshTokenServiceProtocol
 
-    init(baseUrl: String, session: URLSession = .shared, interceptorPipleline: InterceptorPipeline) {
+    init(baseUrl: String,
+         appSession: AppSession,
+         urlSession: URLSession = .shared,
+         interceptorPipleline: InterceptorPipeline,
+         refreshTokenService: RefreshTokenServiceProtocol
+    ) {
         self.baseUrl = baseUrl
-        self.session = session
+        self.appSession = appSession
+        self.urlSession = urlSession
         self.interceptorPipleline = interceptorPipleline
+        self.refreshTokenService = refreshTokenService
     }
 
     func send<T>(_ request: any APIRequest) async throws -> T where T : Decodable {
-        guard let url = URL(string: baseUrl),
-                var urlComponents = URLComponents(url: url.appendingPathComponent(request.path),
-                                                                                resolvingAgainstBaseURL: false) else {
-            throw URLError(.badURL)
-        }
-
-        urlComponents.queryItems = request.queryItems
-        
-        var urlRequest = URLRequest(url: urlComponents.url!)
-        urlRequest.httpMethod = request.method.rawValue
-        urlRequest.httpBody = request.body
-        urlRequest.timeoutInterval = 30.0
-        
-        request.headers.forEach({ urlRequest.setValue($0.value, forHTTPHeaderField: $0.key) })
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        return try await execute(urlRequest, attempt: 1)
+     
+        let urlRequest = try ConvertAPIRequest().convertToRequest(baseUrl, request: request)
+        let data = try await execute(urlRequest, attempt: 0)
+        return try JSONDecoder().decode(T.self, from: data)
     }
     
-    private func execute<T>(_ urlRequest: URLRequest, attempt: Int) async throws -> T where T : Decodable {
+    private func execute(_ urlRequest: URLRequest, attempt: Int) async throws -> Data  {
         do {
             let adaptedRequest = try await interceptorPipleline.adapt(urlRequest)
-            let (data, response) = try await session.data(for: adaptedRequest)
+            let (data, response) = try await urlSession.data(for: adaptedRequest)
             
-            guard let httpResponse = response as? HTTPURLResponse,
-                    200..<300 ~= httpResponse.statusCode else {
+            guard let httpResponse = response as? HTTPURLResponse else {
                 throw URLError(.badServerResponse)
             }
             
-            return try JSONDecoder().decode(T.self, from: data)
+            if httpResponse.statusCode == 401 {
+                do {
+                    let result = try await refreshTokenService.refreshToken(baseURL: baseUrl,
+                                                                            session: urlSession)
+                    if attempt < 3, result {
+                        return try await execute(urlRequest, attempt: attempt + 1)
+                    }
+                } catch { throw error }
+            }
+            guard 200..<300 ~= httpResponse.statusCode else {
+                throw URLError(.badServerResponse)
+            }
+            return data
+        }
+        catch let error as URLError where [.userAuthenticationRequired].contains(error.code) {
+            await MainActor.run {
+                appSession.logout()
+            }
+            throw error
         } catch {
-            print(error.localizedDescription)
             if attempt < 3,
                 try await interceptorPipleline.shouldRetry(urlRequest,
                                                            error: error,

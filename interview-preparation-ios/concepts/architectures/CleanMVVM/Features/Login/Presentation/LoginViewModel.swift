@@ -18,7 +18,7 @@ final class LoginViewModel: ViewModel {
     
     private let loginUseCase: LoginUseCaseProtocol
     private let appViewModel: AppViewModel
-    private let analytics: AnalyticsTracking
+    private weak let analytics: AnalyticsTracking?
     
     init(usecase: LoginUseCaseProtocol,
          appViewModel: AppViewModel,
@@ -30,7 +30,7 @@ final class LoginViewModel: ViewModel {
     }
     
     func trackScreenView() {
-        analytics.track(.viewedLoginScreen)
+        analytics?.track(.viewedLoginScreen)
     }
     
     func goToRegister() {
@@ -42,15 +42,15 @@ final class LoginViewModel: ViewModel {
             errorMessage = "Please fill in all the fields."
             return
         }
-        analytics.track(.logginTapped)
+        analytics?.track(.logginTapped)
         isLoading = true
         defer { isLoading = false }
         do {
             let result = try await loginUseCase.execute(email: email, password: password)
-            self.appViewModel.setLoggedInStatus(result)
-            analytics.track(.loginSuccess)
+            self.appViewModel.session.isAuthenticated = result
+            analytics?.track(.loginSuccess)
         } catch {
-            analytics.track(.loginFailed)
+            analytics?.track(.loginFailed)
             self.errorMessage = "Error: \(error.localizedDescription)"
         }
     }

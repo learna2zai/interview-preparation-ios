@@ -75,7 +75,7 @@ final class AuthRepositoryImpl: AuthRepository {
         let loginUserDTO = LoginUserDTO(email: email, password: password)
         let encodedData = try JSONEncoder().encode(loginUserDTO)
         try await tokenStore.clearTokens()
-        let response: LoginResponseModel = try await apiClient.send(LoginRequest(body: encodedData))
+        let response: TokenResponseModel = try await apiClient.send(LoginRequest(body: encodedData))
         try await tokenStore.save(accessToken: response.accessToken, refreshToken: response.refreshToken)
         return true
     }

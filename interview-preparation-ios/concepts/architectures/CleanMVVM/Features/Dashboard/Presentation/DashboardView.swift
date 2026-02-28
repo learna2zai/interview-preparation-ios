@@ -29,14 +29,17 @@ struct DashboardView: View {
             }
             .shimmer(dashboardViewModel.isLoading)
             .overlay(content: {
-                if dashboardViewModel.users.isEmpty && !dashboardViewModel.isLoading {
+                if dashboardViewModel.users.isEmpty && !dashboardViewModel.isLoading && dashboardViewModel.errorMessage == nil {
                     ContentUnavailableView("No data to display.",
                                            systemImage: "person.bubble",
                                            description: Text("Please add some users to see them here."))
                 }
-//                else if dashboardViewModel.isLoading {
-//                    ProgressView().controlSize(.large)
-//                }
+                else if !dashboardViewModel.isLoading {
+                    if let error = dashboardViewModel.errorMessage {
+                        Text(error)
+                            .foregroundColor(.red)
+                    }
+                }
             })
             .onAppear {
                 dashboardViewModel.trackScreenView()

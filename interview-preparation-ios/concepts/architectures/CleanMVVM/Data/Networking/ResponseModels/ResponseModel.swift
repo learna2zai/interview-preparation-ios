@@ -15,7 +15,7 @@ extension UserResponseModel {
     }
 }
 
-struct LoginResponseModel: Codable {
+struct TokenResponseModel: Codable {
     let accessToken: String
     let refreshToken: String
     let expiresIn: Int

@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol AnalyticsTracking {
+protocol AnalyticsTracking: AnyObject {
     func track(_ event: AnalyticsEvents)
 }
