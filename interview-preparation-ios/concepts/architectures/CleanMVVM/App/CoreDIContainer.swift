@@ -2,7 +2,7 @@
 //  CoreDIContainer.swift
 //  interview-preparation-ios
 //
-//  Created by Ganesh on 23/02/26.
+//  Created on 23/02/26.
 //
 
 import Foundation
@@ -10,15 +10,20 @@ import Foundation
 final class CoreDIContainer {
     
     let apiClient: APIClient
+    let tokenStore = TokenStore()
+    lazy var analyticsService = AnalyticsService()
+    let appSession: AppSession = .init()
     
     init(environment: AppEnvironment) {
-        switch environment {
-            case .development:
-                self.apiClient = APIClient(baseUrl: "https://jsonplaceholder.typicode.com/")
-            case .staging:
-                self.apiClient = APIClient(baseUrl: "https://jsonplaceholder.typicode.com/")
-            case .production:
-                self.apiClient = APIClient(baseUrl: "https://jsonplaceholder.typicode.com/")
-        }
+
+        self.apiClient = APIClient(baseUrl: environment.baseURL,
+                                   appSession: appSession,
+                                   interceptorPipleline:
+                                    InterceptorPipeline(interceptors: [
+                                        AuthInterceptor(tokenStore: tokenStore),
+                                        LoggingInterceptor()
+                                    ]),
+                                   refreshTokenService: RefreshTokenService(tokenStore: tokenStore))
+        
     }
 }

@@ -27,9 +27,9 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyrights @ All rights are reserved." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Cv-t0-cav">
-                                <rect key="frame" x="57.666666666666657" y="803" width="277.66666666666674" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyrights @ All rights are reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Cv-t0-cav">
+                                <rect key="frame" x="85.666666666666671" y="808.33333333333337" width="221.66666666666663" height="15.666666666666629"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -39,11 +39,10 @@
                         <constraints>
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="obG-Y5-kRd" secondAttribute="centerX" id="5cz-MP-9tL"/>
                             <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Bi8-Fy-jtt"/>
-                            <constraint firstItem="7Cv-t0-cav" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="41.666666666666657" id="MdW-Tg-KDX"/>
-                            <constraint firstItem="7Cv-t0-cav" firstAttribute="centerX" secondItem="obG-Y5-kRd" secondAttribute="centerX" id="NuI-Zy-TcQ"/>
                             <constraint firstItem="obG-Y5-kRd" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" symbolic="YES" id="SfN-ll-jLj"/>
                             <constraint firstAttribute="bottom" secondItem="obG-Y5-kRd" secondAttribute="bottom" constant="20" id="Y44-ml-fuU"/>
-                            <constraint firstItem="obG-Y5-kRd" firstAttribute="top" secondItem="7Cv-t0-cav" secondAttribute="bottom" constant="8" symbolic="YES" id="g7l-5d-wmJ"/>
+                            <constraint firstItem="obG-Y5-kRd" firstAttribute="top" secondItem="7Cv-t0-cav" secondAttribute="bottom" constant="8" id="cch-Oy-dHj"/>
+                            <constraint firstItem="7Cv-t0-cav" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="lFY-Ri-0AJ"/>
                             <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="zHV-rY-emL"/>
                         </constraints>
                     </view>

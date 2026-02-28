@@ -2,7 +2,7 @@
 //  LogoutUseCase.swift
 //  interview-preparation-ios
 //
-//  Created by Ganesh on 23/02/26.
+//  Created on 23/02/26.
 //
 
 import Foundation
@@ -14,7 +14,7 @@ final class LogoutUseCase {
         self.authRepository = authRepository
     }
     
-    func execute() async throws {
+    func execute() async throws -> Bool {
         try await authRepository.logout()
     }
 }

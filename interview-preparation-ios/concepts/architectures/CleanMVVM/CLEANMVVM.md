@@ -1,6 +1,6 @@
 ## Clean Architecture + MVVM (Clean. Testable. Scalable.)
 
-### 🔹 What is Clean Architecture?
+<h3><p align="center"> 🔹 What is Clean Architecture? </p></h3>
 
 Introduced by Robert C. Martin (Uncle Bob), Clean Architecture is based on layers arranged in concentric circles.
 
@@ -8,6 +8,36 @@ Introduced by Robert C. Martin (Uncle Bob), Clean Architecture is based on layer
 
 Core idea:
 > 👉 Dependencies always point inward.
+
+**Layer Breakdown**
+
+* 🟣 Presentation
+
+  - SwiftUI Views
+  - ViewModels
+  - UI Models
+
+* 🔵 Domain
+
+  - Entities
+  - UseCases
+  - Repository Protocols
+  - Business Rules
+
+* 🟢 Data
+
+  - Repository Implementations
+  - DTOs
+  - APIClient
+  - Interceptors
+  - Cache
+  - Mappers
+
+* ⚫ Infrastructure
+
+  - URLSession
+  - File storage
+  - Metrics
 
 ### 🔹 Typical Layers
 
@@ -56,6 +86,15 @@ Core idea:
 ### Flow:
 
 View → ViewModel → UseCase → Repository → API
+
+### Layers
+* **Domain Layer** = Entities + Use Cases + Repositories Interfaces
+* **Data Repositories Layer** = Repositories Implementations + API (Network) + Persistence DB
+* **Presentation Layer (MVVM)** = ViewModels + Views
+
+
+![Alt text](../../../ReadMeImages/CleanArchitectureDependencies.png)
+
 
 ### Why it’s popular:
 
@@ -178,3 +217,43 @@ MyApp/
 │
 └── Resources/
 ```
+
+## 2️⃣ Analytics
+
+```
+Presentation (ViewModel)
+        ↓
+Domain (AnalyticsTracking protocol)
+        ↓
+Data (FirebaseAnalyticsService)
+        ↓
+Firebase SDK
+
+```
+
+Dependency rule respected:
+ - Outer layers depend on inner
+ - Domain does NOT depend on Firebase
+
+### ❌ Common Mistakes
+
+Bad practice:
+ - ❌ Calling Firebase directly in ViewModel
+ - ❌ Importing Firebase in Domain
+ - ❌ Passing [String: Any] everywhere
+ - ❌ Hardcoding event names in UI
+
+### 🧠 Final Clean Architecture Mapping
+Layer               Responsibility
+Domain              Define AnalyticsTracking protocol + events
+Data                Implement SDK wrapper
+Presentation        Call analytics
+DI                  Inject implementation
+
+### 🏆 Final Result
+You now have:
+ - Analytics decoupled from UI
+ - Business-level events
+ - Swappable providers
+ - Testable tracking
+ - Clean layering

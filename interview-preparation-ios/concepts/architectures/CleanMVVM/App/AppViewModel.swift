@@ -2,25 +2,50 @@
 //  AppViewModel.swift
 //  interview-preparation-ios
 //
-//  Created by Ganesh on 23/02/26.
+//  Created on 23/02/26.
 //
 
 import Foundation
 import Combine
 
-enum AppRoute: Equatable {
-    case login
-    case dashboard
+@Observable
+final class AppSession {
+    
+    var isAuthenticated: Bool = false
+    
+    func logout() {
+        isAuthenticated = false
+    }
 }
 
 @Observable
-final class AppViewModel {
-    
+final class AppViewModel: ViewModel {
+    var isLoading: Bool = true
+    var errorMessage: String? = nil
+
     var currentRoute: AppRoute = .login
-    private var isLoggIn: Bool = false
+    var session: AppSession
+    private let tokenStore: TokenStoring
     
-    func setLoggedInStatus(_ status: Bool) {
-        isLoggIn = status
-        currentRoute = isLoggIn ? .dashboard : .login
+    init(session: AppSession,
+         tokenStore: TokenStoring) {
+        self.session = session
+        self.tokenStore = tokenStore
+    }
+    
+    func trackScreenView() {
+        //
+    }
+    
+    func checkLoggedInStatus() async {
+        defer { isLoading = false }
+        do {
+            if let token = try await tokenStore.getAccessToken(),
+                token.isEmpty == false {
+                session.isAuthenticated = true
+            }
+        } catch {
+            errorMessage = error.localizedDescription
+        }
     }
 }

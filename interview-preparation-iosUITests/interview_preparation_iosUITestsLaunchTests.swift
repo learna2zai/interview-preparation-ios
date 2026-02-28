@@ -2,7 +2,7 @@
 //  interview_preparation_iosUITestsLaunchTests.swift
 //  interview-preparation-iosUITests
 //
-//  Created by Ganesh on 22/02/26.
+//  Created on 22/02/26.
 //
 
 import XCTest

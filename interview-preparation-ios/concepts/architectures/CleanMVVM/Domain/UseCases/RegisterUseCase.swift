@@ -2,7 +2,7 @@
 //  RegisterUseCase.swift
 //  interview-preparation-ios
 //
-//  Created by Ganesh on 23/02/26.
+//  Created on 23/02/26.
 //
 
 import Foundation
@@ -14,7 +14,7 @@ final class RegisterUseCase {
         self.repository = repository
     }
     
-    func execute(name: String, email: String, password: String) async throws {
+    func execute(name: String, email: String, password: String) async throws -> Bool {
         try await repository.register(name: name, email: email, password: password)
     }
 }

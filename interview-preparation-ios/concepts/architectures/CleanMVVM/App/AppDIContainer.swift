@@ -2,7 +2,7 @@
 //  AppDIContainer.swift
 //  interview-preparation-ios
 //
-//  Created by Ganesh on 23/02/26.
+//  Created on 23/02/26.
 //
 
 import Foundation
@@ -13,7 +13,8 @@ final class AppDIContainer {
     lazy var core = CoreDIContainer(environment: environment)
     
     // MARK: - App State
-    let appViewModel = AppViewModel()
+    lazy var appViewModel = AppViewModel(session: core.appSession,
+                                         tokenStore: core.tokenStore)
     
     init(_ environment: AppEnvironment) {
         self.environment = environment

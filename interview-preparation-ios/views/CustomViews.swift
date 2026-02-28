@@ -2,7 +2,7 @@
 //  CustomViews.swift
 //  interview-preparation-ios
 //
-//  Created by Ganesh on 22/02/26.
+//  Created on 22/02/26.
 //
 
 import SwiftUI
@@ -12,6 +12,7 @@ struct CustomViews: View {
         List {
             Section {
                 NavigationLink("View Builder", destination: ViewBuilderExample())
+                NavigationLink("View Animations", destination: AnimationView())
             }
         }
         .navigationTitle(Text("Custom Views"))
