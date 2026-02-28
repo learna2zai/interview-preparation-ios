@@ -7,12 +7,15 @@
 
 import Foundation
 import Combine
-import SwiftUI
 
-enum AppRoute {
-    case register
-    case login
-    case dashboard
+@Observable
+final class AppSession {
+    
+    var isAuthenticated: Bool = false
+    
+    func logout() {
+        isAuthenticated = false
+    }
 }
 
 @Observable
@@ -20,12 +23,13 @@ final class AppViewModel: ViewModel {
     var isLoading: Bool = true
     var errorMessage: String? = nil
 
-    var path = NavigationPath()
     var currentRoute: AppRoute = .login
-    private var isLoggIn: Bool = false
+    var session: AppSession
     private let tokenStore: TokenStoring
     
-    init(tokenStore: TokenStoring) {
+    init(session: AppSession,
+         tokenStore: TokenStoring) {
+        self.session = session
         self.tokenStore = tokenStore
     }
     
@@ -38,15 +42,10 @@ final class AppViewModel: ViewModel {
         do {
             if let token = try await tokenStore.getAccessToken(),
                 token.isEmpty == false {
-                setLoggedInStatus(true)
+                session.isAuthenticated = true
             }
         } catch {
             errorMessage = error.localizedDescription
         }
-    }
-    
-    func setLoggedInStatus(_ status: Bool) {
-        isLoggIn = status
-        currentRoute = isLoggIn ? .dashboard : .login
     }
 }

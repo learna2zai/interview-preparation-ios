@@ -13,7 +13,8 @@ final class AppDIContainer {
     lazy var core = CoreDIContainer(environment: environment)
     
     // MARK: - App State
-    lazy var appViewModel = AppViewModel(tokenStore: core.tokenStore)
+    lazy var appViewModel = AppViewModel(session: core.appSession,
+                                         tokenStore: core.tokenStore)
     
     init(_ environment: AppEnvironment) {
         self.environment = environment

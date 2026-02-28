@@ -43,7 +43,7 @@ final class SettingsViewModel: ViewModel {
         defer { isLoading = false }
         do {
             let result = try await logoutUseCase.execute()
-            self.appVierwModel.setLoggedInStatus(!result)
+            self.appVierwModel.session.isAuthenticated = !result
         } catch {
             self.errorMessage = error.localizedDescription
         }

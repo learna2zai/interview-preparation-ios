@@ -24,3 +24,8 @@ enum AppPath: String, Hashable, CaseIterable {
     case basic
     case architecture
 }
+
+enum AppRoute {
+    case register
+    case login
+}
