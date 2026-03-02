@@ -16,7 +16,7 @@ enum AnalyticsEvents: String {
     
     case viewedRegisterScreen = "register_screen"
     case registerTapped = "register_tapped"
-    case registerfailed = "register_failed"
+    case registerFailed = "register_failed"
     case registerSuccess = "register_success"
     
     case viewedDashboardScreen = "dashboard_screen"
