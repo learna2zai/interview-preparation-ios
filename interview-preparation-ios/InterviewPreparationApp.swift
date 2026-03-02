@@ -9,18 +9,21 @@ import SwiftUI
 
 @main
 struct InterviewPreparationApp: App {
-    init() {
-        BackgroundTaskManager.shared.registerBackgroundTasks()
-    }
+    
+    @State var coordinator = AppCoordinator()
+    
+//    init() {
+//        BackgroundTaskManager.shared.registerBackgroundTasks()
+//    }
     
     var body: some Scene {
         WindowGroup {
-            let container = AppDIContainer(.staging)
-            AppView(appViewModel: container.appViewModel, container: container)
-                .onAppear {
-                    BackgroundTaskManager.shared.scheduleAppRefresh()
-                    BackgroundTaskManager.shared.scheduleProcessing()
-                }
+            coordinator.showView()
+                .environment(coordinator)
+//                .onAppear {
+//                    BackgroundTaskManager.shared.scheduleAppRefresh()
+//                    BackgroundTaskManager.shared.scheduleProcessing()
+//                }
         }
     }
 }

@@ -26,21 +26,18 @@ protocol NetworkClient {
 final class APIClient: NetworkClient {
     
     private let baseUrl: String
-    private let appSession: AppSession
     private let urlSession: URLSession
-    private let interceptorPipleline: InterceptorPipeline
+    private let interceptorPipeline: InterceptorPipeline
     private let refreshTokenService: RefreshTokenServiceProtocol
 
     init(baseUrl: String,
-         appSession: AppSession,
          urlSession: URLSession = .shared,
-         interceptorPipleline: InterceptorPipeline,
+         interceptorPipeline: InterceptorPipeline,
          refreshTokenService: RefreshTokenServiceProtocol
     ) {
         self.baseUrl = baseUrl
-        self.appSession = appSession
         self.urlSession = urlSession
-        self.interceptorPipleline = interceptorPipleline
+        self.interceptorPipeline = interceptorPipeline
         self.refreshTokenService = refreshTokenService
     }
 
@@ -53,7 +50,7 @@ final class APIClient: NetworkClient {
     
     private func execute(_ urlRequest: URLRequest, attempt: Int) async throws -> Data  {
         do {
-            let adaptedRequest = try await interceptorPipleline.adapt(urlRequest)
+            let adaptedRequest = try await interceptorPipeline.adapt(urlRequest)
             let (data, response) = try await urlSession.data(for: adaptedRequest)
             
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -75,13 +72,10 @@ final class APIClient: NetworkClient {
             return data
         }
         catch let error as URLError where [.userAuthenticationRequired].contains(error.code) {
-            await MainActor.run {
-                appSession.logout()
-            }
             throw error
         } catch {
             if attempt < 3,
-                try await interceptorPipleline.shouldRetry(urlRequest,
+                try await interceptorPipeline.shouldRetry(urlRequest,
                                                            error: error,
                                                            attempt: attempt) {
                 return try await execute(urlRequest, attempt: attempt + 1)
