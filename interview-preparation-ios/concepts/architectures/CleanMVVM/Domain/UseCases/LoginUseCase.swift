@@ -7,11 +7,7 @@
 
 import Foundation
 
-protocol LoginUseCaseProtocol {
-    func execute(email: String, password: String) async throws -> Bool
-}
-
-final class LoginUseCase: LoginUseCaseProtocol {
+final class LoginUseCase {
     private let authRepository: AuthRepository
     
     init(repository: AuthRepository) {
