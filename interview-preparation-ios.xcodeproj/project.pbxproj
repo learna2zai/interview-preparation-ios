@@ -42,6 +42,7 @@
 		1FCA92DE2F4DC10600105CA7 /* Exceptions for "interview-preparation-ios" folder in "interview-preparation-ios" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				concepts/architectures/CleanMVVM/Presentation/COORDINATOR.md,
 				Info.plist,
 			);
 			target = 1FCA8DDC2F4AEBD500105CA7 /* interview-preparation-ios */;
