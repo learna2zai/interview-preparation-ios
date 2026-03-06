@@ -15,3 +15,9 @@ A sample iOS application for practicing modern app architecture, testing, and pl
 git clone https://github.com/your-org/interview-preparation-ios.git
 cd interview-preparation-ios
 ```
+
+### App Glimpses
+
+<img width="200" height="400" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-06 at 18 05 38" src="https://github.com/user-attachments/assets/53acb9c3-562d-46eb-83e2-4c0a39bff23e" />
+<img width="200" height="400" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-06 at 18 05 29" src="https://github.com/user-attachments/assets/72762543-2c61-4595-be72-d8ebaf2fa6b3" />
+<img width="200" height="400" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-06 at 18 05 25" src="https://github.com/user-attachments/assets/39e8c677-8269-4930-ace8-8647bef72d67" />
