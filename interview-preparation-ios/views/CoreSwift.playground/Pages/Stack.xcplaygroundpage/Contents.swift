@@ -107,7 +107,6 @@ lnkedStack.isEmpty()
 lnkedStack.pop()
 lnkedStack.isEmpty()
 
-
 class Sample {
     let name: String
     
@@ -130,7 +129,15 @@ class A: Sample {
 // MARK: - Overroide stored or computed property
 
 class Vehicle {
-    var speed = 20
+    var speed = 20 {
+        willSet {
+            print("Setting property from \(speed) to \(newValue)")
+        }
+        
+        didSet {
+            print("New value set to property is \(speed) to \(oldValue)")
+        }
+    }
     
     var name: String {
         "Vehicle"
@@ -138,7 +145,7 @@ class Vehicle {
 }
 
 class Car: Vehicle {
-    override var speed: Int {
+    override var speed: Int { // can not override directly in sublclass
         get { super.speed }
         set { super.speed = newValue }
     }
@@ -147,6 +154,10 @@ class Car: Vehicle {
         get { "Car Vehicle" }
     }
 }
+
+let vehicale = Vehicle()
+vehicale.speed = 60
+print(vehicale.speed)
 
 
 // MARK: - Retail cycle
