@@ -4,7 +4,6 @@ import Foundation
 
 // MARK: - Protocol, Protocol Extension.
 
-
 protocol Animal {
     func makeSound() -> String
 }
