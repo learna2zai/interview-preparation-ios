@@ -5,6 +5,9 @@ import Foundation
 
 // cons - more boilerplate code initially
 
+// Use case
+// Factory Method works well when a base class defines a contract and subclasses decide what concrete type to create.
+
 protocol Shape {
     func draw()
 }

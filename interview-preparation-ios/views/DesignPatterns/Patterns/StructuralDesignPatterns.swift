@@ -7,3 +7,6 @@
 //  
 
 import Foundation
+
+// Memento fits undo features, rollbacks, and restoring prior versions without exposing internal representation.
+
