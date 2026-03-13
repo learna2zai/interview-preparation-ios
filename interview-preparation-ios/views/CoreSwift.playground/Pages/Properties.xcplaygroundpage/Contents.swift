@@ -115,11 +115,45 @@ struct PostView: View {
             TextField("Enter Description", text: Binding(projectedValue: $descripion))
             
         }
+        .task {
+            //
+        }
+        .onAppear(perform: {
+            
+        })
         .padding()
     }
 }
 
 var postView = PostView()
 PlaygroundPage.current.setLiveView(postView)
+
+
+
+// MARK: - Dynamic Member Lookup
+
+@dynamicMemberLookup
+struct KnowledgeBase {
+    private var data: [String: String]
+    
+    init(data: [String : String]) {
+        self.data = data
+    }
+    
+    subscript(dynamicMember key: String) -> String {
+        return data[key] ?? "No information available for that key."
+    }
+}
+
+let knowledgeBase = KnowledgeBase(data: [
+    "swift": "Swift is a general-purpose programming language developed by Apple.",
+    "ios": "iOS is an operating system developed by Apple for use on Apple's smartphones and tablet computers.",
+    "macOS": "macOS is the operating system for Apple's personal computers, including the iMac, Mac Pro, and Apple Watch."
+])
+
+print(knowledgeBase.swift)
+
+
+
 
 //: [Next](@next)

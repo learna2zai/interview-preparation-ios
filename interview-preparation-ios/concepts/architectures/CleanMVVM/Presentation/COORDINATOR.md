@@ -2,6 +2,19 @@
 
 The Coordinator pattern is commonly used in iOS apps to manage navigation flow outside of ViewControllers. When combined with MVVM, it keeps your architecture clean, testable, and scalable.
 
+A Coordinator in Swift/SwiftUI is a design pattern acting as an architectural component that manages application flow, navigation, and dependency injection outside of the views, separating navigation logic from UI code. 
+
+It decouples screens, enabling better scalability, testability, and reuse of modular components in complex applications. 
+
+### Key Responsibilities of a Coordinator:
+
+- **Navigation Management:** Orchestrates the flow of the app (e.g., pushing, presenting screens) based on user actions or programmatical events.
+- **Dependency Injection:** Responsible for creating ViewModels and Views, injecting necessary data, and passing them to the next screen in the flow.
+- **Separation of Concerns:** Removes navigation logic from SwiftUI views, keeping them focused solely on rendering data and capturing user input.
+- **Coordinating Flow:** Handles complex, multi-screen scenarios by organizing parent and child coordinators to manage specific feature flows (e.g., login, checkout). 
+
+In SwiftUI, a coordinator can be a class (often ObservableObject) that updates a NavigationPath or a View state, allowing the UI to react to navigation changes. It is often used to replace direct NavigationLink usage for more control over navigation flow. 
+
 
 ### Golden Rule
 
@@ -66,3 +79,6 @@ SwiftUI View (owns VM with @StateObject)
 ViewModel (uses UseCases)
 
 ```
+
+### Refrences
+- [Coordinators & SwiftUI](https://vbat.dev/coordinators-swiftui)
