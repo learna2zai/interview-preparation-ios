@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import BackgroundTasks
+@preconcurrency import BackgroundTasks
 
-class BackgroundTaskManager {
+actor BackgroundTaskManager  {
     private let refreshIdentifire = "com.companyname.app.refresh"
     private let processingIdentifire = "com.companyname.app.processing"
     
@@ -23,7 +23,7 @@ class BackgroundTaskManager {
         }
         
         BGTaskScheduler.shared.register(forTaskWithIdentifier: processingIdentifire, using: nil) { task in
-            self.handleProcessing(task: task as! BGProcessingTask)
+//            self.handleProcessing(task: task as! BGProcessingTask)
         }
     }
     
@@ -74,32 +74,20 @@ class BackgroundTaskManager {
         }
     }
     
-    func handleProcessing(task: BGProcessingTask) {
-        scheduleProcessing()
-        
-        let queue = OperationQueue()
-        let operation = ProcessingOperation()
-        
-        task.expirationHandler = {
-            queue.cancelAllOperations()
-        }
-        
-        operation.completionBlock = {
-            task.setTaskCompleted(success: !operation.isCancelled)
-        }
-        
-        queue.addOperation(operation)
-    }
-}
-
-class ProcessingOperation: Operation, @unchecked Sendable {
-    override func main() {
-        if isCancelled { return }
-        
-//        do {
-//            try someAsyncOperation() //
-//        } catch {
-//            print("Processing Error: \(error)")
+//    func handleProcessing(task: BGProcessingTask) {
+//        scheduleProcessing()
+//        
+//        let queue = OperationQueue()
+//        let operation = ProcessingOperation()
+//        
+//        task.expirationHandler = {
+//            queue.cancelAllOperations()
 //        }
-    }
+//        
+//        operation.completionBlock = {
+//            task.setTaskCompleted(success: !operation.isCancelled)
+//        }
+//        
+//        queue.addOperation(operation)
+//    }
 }

@@ -165,6 +165,27 @@ struct City: SomePlaceProtocol {
     }
 }
 
+
+// example
+
+protocol Shape {
+    var area: Double { get }
+}
+
+struct Circle: Shape {
+    var radius: Double
+    var area: Double {
+        .pi * radius * radius
+    }
+}
+
+func makeCircle(flag: Bool) -> (any Shape)? {
+    if flag {
+        return Circle(radius: 10)
+    }
+    return nil
+}
+
 // MARK: - Static Dispatch vs Dynamic Dispatch
 
 // MARK: - VTable(Virtual Table) vs Witness Table

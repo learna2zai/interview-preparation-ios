@@ -25,7 +25,7 @@ struct UserListRequest: APIRequest {
     }
 }
 
-final class UserRepositoryImpl: UserRepository {
+struct UserRepositoryImpl: UserRepository {
 
     private let apiClient: APIClient
     

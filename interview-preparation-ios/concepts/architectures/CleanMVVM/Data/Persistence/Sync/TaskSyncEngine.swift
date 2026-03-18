@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-final class TaskSyncEngine {
+struct TaskSyncEngine {
     
     private let modelContext: ModelContext
     private let api: TaskAPI
@@ -46,15 +46,15 @@ final class TaskSyncEngine {
     func refreshFromRemote() async throws {
         let remoteTasks = try await api.fetchTasks()
         for dto in remoteTasks {
-            upsertTask(dto)
+            await upsertTask(dto)
         }
         try modelContext.save()
     }
     
-    private func upsertTask(_ dto: TaskDTO) {
-        
+    private func upsertTask(_ dto: TaskDTO) async {
+        let id = dto.id
         // merge strategy (Last write wins)
-        let descriptor = FetchDescriptor<TaskEntity>(predicate: #Predicate { $0.id == dto.id})
+        let descriptor = FetchDescriptor<TaskEntity>(predicate: #Predicate { $0.id == id})
         
         if let existingTask = try? modelContext.fetch(descriptor).first {
             if dto.updatedAt > existingTask.updatedAt {

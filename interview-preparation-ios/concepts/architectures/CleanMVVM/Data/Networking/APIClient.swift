@@ -23,7 +23,7 @@ protocol NetworkClient {
     func send<T: Decodable>(_ request: APIRequest) async throws -> T
 }
 
-final class APIClient: NetworkClient {
+struct APIClient: NetworkClient {
     
     private let baseUrl: String
     private let urlSession: URLSession

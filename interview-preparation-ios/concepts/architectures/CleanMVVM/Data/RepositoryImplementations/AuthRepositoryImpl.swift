@@ -61,7 +61,7 @@ struct LogoutRequest: APIRequest {
     }
 }
 
-final class AuthRepositoryImpl: AuthRepository {
+struct AuthRepositoryImpl: AuthRepository {
  
     private let apiClient: APIClient
     private let tokenStore: TokenStoring
