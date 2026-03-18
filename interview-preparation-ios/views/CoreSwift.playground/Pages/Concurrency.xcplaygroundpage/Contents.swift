@@ -12,7 +12,7 @@ import PlaygroundSupport
 // An async func in swift can give up the thread that its running on.
 // On the thread another async function run until first async function blocked. And once first async function resumes back swift doesn't give guarantee about which thread that function will run on.
 
-// Data race - it occures when multiple piedes of code tries to access some piece of shared mutable state in concurrent code execution.
+// Data race - it occures when multiple pieces of code tries to access some piece of shared mutable state in concurrent code execution.
 
 // Swift detects and prevents data races, most data races produce at compile time
 // We use actors and isolation to protect against data races.
@@ -21,13 +21,13 @@ import PlaygroundSupport
 // When calling async method, execution suspend until that method returns. We write await keyword in front of suspention point statements.
 // When we adding concurrent code to existing porject we need to take top down approach as in bottomup approach sync code can't ever call aysnc code.
 
-func someAyncFunc() async throws -> [String] {
+func someAsyncFunc() async throws -> [String] {
     try await Task.sleep(for: .seconds(2))
     return ["a", "b", "c"]
 }
 
 do {
-    let result = try await someAyncFunc()
+    let result = try await someAsyncFunc()
     print(result)
 } catch {
     print("Error: \(error)")
@@ -155,6 +155,25 @@ try? await downloadWithTaskGroup(files: ["file5", "file6", "file7", "file8", "fi
 
 // Detached Tasks - A detached task doesn’t rely on any parent. It’s free-floating.
 //
+
+// Task - A task is unit of work that can be run asynchronouslly as part of your program.
+// Task itself does only one thing at a time, when we create multiple tasks, swift can schedule them to run simulteneously.
+
+/**
+ Structured Concureency - Structured Concurrency is a way to organize program, and task in such way that task don't outlive the scope in which they are created. To execute piece of work,  we are creating multiple tasks with task group, Tasks are arrenged in hierarchy. Each task given in a group has same parant task, and each task can have child tasks. So within structured task hierarchy, no child task remains running longer than its parent task.
+ 
+ And it has several advantages:
+  - A task group always waits for all child tasks to complete before its destroyed.
+  - Setting higher priority on child task, parent tasks priority automaticallty escalated.
+  - When parent task cancelled, each of its child tasks aslo automatically cancelled.
+  - Tasks local values propogates to child tasks efficenntly and automatically.
+ 
+  Usage:
+  - withTaskGroup or withThrowingTaskGroup.
+ */
+
+
+
 
 
 

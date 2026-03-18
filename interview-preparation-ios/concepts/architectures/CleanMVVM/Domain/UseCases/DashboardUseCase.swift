@@ -20,8 +20,8 @@ final class DashboardUseCase {
     }
     
     func execute(userId: Int) async throws -> DashboardData {
-        async let user = await userRepository.getUser(userId: userId)
-        async let reports = await dashboardRepository.fetchReports(for: userId)
+        async let user =  userRepository.getUser(userId: userId)
+        async let reports =  dashboardRepository.fetchReports(for: userId)
         
         return try await DashboardData(user: user, reports: reports)
     }

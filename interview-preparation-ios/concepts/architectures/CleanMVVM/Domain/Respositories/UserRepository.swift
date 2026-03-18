@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol UserRepository {
+protocol UserRepository: Sendable {
     func createUser(user: User) async throws -> Bool
     func updateUser(userId: Int, user: User) async throws -> Bool
     func deleteUser(userId: Int) async throws -> Bool

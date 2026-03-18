@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol DashboardRepository {
+protocol DashboardRepository: Sendable {
     func fetchUsersCount() async throws -> Int
     func fetchReports(for userId: Int) async throws -> [Report]
 }
