@@ -78,3 +78,6 @@ func sha256(_ data: Data) -> Data {
     return Data(digest)
 }
 ```
+
+<img width="1408" height="768" alt="SSLTLSPinning" src="https://github.com/user-attachments/assets/3f4ce787-a783-4d2d-ae35-3d2cca59807e" />
+
